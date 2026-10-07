@@ -2,9 +2,41 @@
 
 namespace App\Support;
 
+use App\Models\Booking;
+use App\Models\CultureItem;
+use App\Models\Destination;
+use App\Models\Event;
+use App\Models\GalleryItem;
+use App\Models\MapMarker;
+use App\Models\NewsArticle;
+use App\Models\PortalSetting;
+use App\Models\TeamMember;
+use App\Models\UmkmProduct;
+use App\Models\VisitLog;
+use Illuminate\Database\Eloquent\Model;
+
+// Penyimpanan data portal berbasis database (MySQL).
+// API publik sengaja dipertahankan sama seperti versi file JSON sebelumnya,
+// sehingga controller dan view tidak perlu diubah.
 class MorelaStore
 {
+    protected const ENTITY_MODELS = [
+        'destinations' => Destination::class,
+        'umkm' => UmkmProduct::class,
+        'news' => NewsArticle::class,
+        'events' => Event::class,
+        'culture' => CultureItem::class,
+        'gallery' => GalleryItem::class,
+        'team' => TeamMember::class,
+        'bookings' => Booking::class,
+        'mapMarkers' => MapMarker::class,
+    ];
+
+    protected const SETTING_KEYS = ['paymentSettings', 'heroSliders', 'contactInfo', 'heroText'];
+
     protected static ?array $data = null;
+
+    protected static array $columns = [];
 
     public static function load(): array
     {
@@ -12,24 +44,28 @@ class MorelaStore
             return self::$data;
         }
 
-        $file = self::path();
+        $data = [];
 
-        if (file_exists($file)) {
-            self::$data = json_decode((string) file_get_contents($file), true);
-        } else {
-            self::$data = self::defaults();
-            self::persist();
+        foreach (self::ENTITY_MODELS as $key => $model) {
+            $data[$key] = array_map(
+                fn (Model $row) => $row->toArray(),
+                $model::query()->orderBy('sort_order')->orderBy('id')->get()->all()
+            );
         }
 
-        return self::$data;
-    }
+        $defaults = self::defaults();
+        $stored = PortalSetting::query()
+            ->get()
+            ->mapWithKeys(fn (PortalSetting $row) => [$row->key => $row->value])
+            ->all();
 
-    public static function persist(): void
-    {
-        file_put_contents(
-            self::path(),
-            json_encode(self::$data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
-        );
+        foreach (self::SETTING_KEYS as $key) {
+            $data[$key] = is_array($stored[$key] ?? null) ? $stored[$key] : ($defaults[$key] ?? []);
+        }
+
+        self::$data = $data;
+
+        return $data;
     }
 
     public static function defaults(): array
@@ -65,6 +101,40 @@ class MorelaStore
         ]);
     }
 
+    // Mengisi tabel dengan data default (dari morela-seed.json + pengaturan pabrik).
+    // Idempotent per tabel kecuali $force = true (mengganti seluruh isi, dipakai reset()).
+    public static function seedDefaults(bool $force = false): void
+    {
+        $defaults = self::defaults();
+
+        foreach (self::ENTITY_MODELS as $key => $model) {
+            if ($force) {
+                $model::query()->delete();
+            } elseif ($model::query()->exists()) {
+                continue;
+            }
+
+            foreach (array_values($defaults[$key] ?? []) as $index => $item) {
+                $attributes = self::filterColumns($model, $item);
+                $attributes['id'] = (string) $item['id'];
+                $attributes['sort_order'] = $index;
+                $model::query()->create($attributes);
+            }
+        }
+
+        if ($force) {
+            VisitLog::query()->delete();
+        }
+
+        foreach (self::SETTING_KEYS as $key) {
+            if ($force || ! PortalSetting::query()->whereKey($key)->exists()) {
+                self::putSetting($key, $defaults[$key] ?? []);
+            }
+        }
+
+        self::$data = null;
+    }
+
     public static function get(string $key, mixed $default = null): mixed
     {
         $data = self::load();
@@ -74,91 +144,104 @@ class MorelaStore
 
     public static function set(string $key, mixed $value): void
     {
-        $data = self::load();
-        $data[$key] = $value;
-        self::$data = $data;
-        self::persist();
+        if (isset(self::ENTITY_MODELS[$key])) {
+            self::replaceEntity($key, is_array($value) ? $value : []);
+        } elseif (in_array($key, self::SETTING_KEYS, true)) {
+            self::putSetting($key, $value);
+        }
+
+        self::$data = null;
     }
 
     public static function merge(string $key, array $patch): void
     {
-        $data = self::load();
-        $data[$key] = array_merge(is_array($data[$key] ?? null) ? $data[$key] : [], $patch);
-        self::$data = $data;
-        self::persist();
+        if (! in_array($key, self::SETTING_KEYS, true)) {
+            return;
+        }
+
+        $current = self::get($key, []);
+        self::putSetting($key, array_merge(is_array($current) ? $current : [], $patch));
+        self::$data = null;
     }
 
     public static function addEntity(string $key, array $item): void
     {
-        $data = self::load();
-        array_unshift($data[$key], $item);
-        self::$data = $data;
-        self::persist();
+        $model = self::ENTITY_MODELS[$key] ?? null;
+
+        if ($model === null) {
+            return;
+        }
+
+        $attributes = self::filterColumns($model, $item);
+        $attributes['id'] = (string) $item['id'];
+        $min = $model::query()->min('sort_order');
+        $attributes['sort_order'] = is_null($min) ? 0 : ((int) $min) - 1;
+
+        $model::query()->create($attributes);
+        self::$data = null;
     }
 
     public static function updateEntity(string $key, string $id, array $patch): bool
     {
-        $data = self::load();
+        $model = self::ENTITY_MODELS[$key] ?? null;
 
-        foreach ($data[$key] as $index => $item) {
-            if (($item['id'] ?? null) === $id) {
-                $data[$key][$index] = array_merge($item, $patch);
-                self::$data = $data;
-                self::persist();
-
-                return true;
-            }
+        if ($model === null) {
+            return false;
         }
 
-        return false;
+        $row = $model::query()->find($id);
+
+        if ($row === null) {
+            return false;
+        }
+
+        unset($patch['id']);
+        $row->fill(self::filterColumns($model, $patch));
+        $row->save();
+        self::$data = null;
+
+        return true;
     }
 
     public static function deleteEntity(string $key, string $id): bool
     {
-        $data = self::load();
-        $before = count($data[$key]);
-        $data[$key] = array_values(array_filter($data[$key], fn ($item) => ($item['id'] ?? null) !== $id));
+        $model = self::ENTITY_MODELS[$key] ?? null;
 
-        if (count($data[$key]) === $before) {
+        if ($model === null) {
             return false;
         }
 
-        self::$data = $data;
-        self::persist();
+        $deleted = (int) $model::query()->whereKey($id)->delete();
+        self::$data = null;
 
-        return true;
+        return $deleted > 0;
     }
 
     // Mencatat pengunjung unik (per browser) pada bulan berjalan (WIT).
     public static function registerMonthlyVisit(string $visitorId): int
     {
-        $data = self::load();
         $month = now('Asia/Jayapura')->format('Y-m');
-        $log = is_array($data['visitLog'] ?? null) ? $data['visitLog'] : [];
-        $visitors = $log[$month] ?? [];
 
-        if (! in_array($visitorId, $visitors, true)) {
-            $visitors[] = $visitorId;
-            $log[$month] = $visitors;
-            $data['visitLog'] = array_slice($log, -12, null, true);
-            self::$data = $data;
-            self::persist();
-        }
+        VisitLog::query()->insertOrIgnore([
+            'month' => $month,
+            'visitorId' => $visitorId,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
-        return count($visitors);
+        return VisitLog::query()->where('month', $month)->count();
     }
 
     // Rekap jumlah pengunjung unik untuk N bulan terakhir (termasuk bulan berjalan).
     public static function visitMonths(int $count = 3): array
     {
-        $log = self::get('visitLog', []);
         $months = [];
 
         for ($i = $count - 1; $i >= 0; $i--) {
             $month = now('Asia/Jayapura')->startOfMonth()->subMonths($i)->format('Y-m');
             $months[] = [
                 'month' => $month,
-                'count' => is_array($log[$month] ?? null) ? count($log[$month]) : 0,
+                'count' => VisitLog::query()->where('month', $month)->count(),
             ];
         }
 
@@ -167,12 +250,38 @@ class MorelaStore
 
     public static function reset(): void
     {
-        self::$data = self::defaults();
-        self::persist();
+        self::seedDefaults(true);
     }
 
-    protected static function path(): string
+    protected static function replaceEntity(string $key, array $items): void
     {
-        return storage_path('app/morela-data.json');
+        $model = self::ENTITY_MODELS[$key];
+        $model::query()->delete();
+
+        foreach (array_values($items) as $index => $item) {
+            $attributes = self::filterColumns($model, $item);
+            $attributes['id'] = (string) $item['id'];
+            $attributes['sort_order'] = $index;
+            $model::query()->create($attributes);
+        }
+    }
+
+    protected static function putSetting(string $key, mixed $value): void
+    {
+        PortalSetting::query()->updateOrCreate(['key' => $key], ['value' => $value]);
+    }
+
+    // Menyaring atribut agar hanya kolom tabel yang benar-benar ada yang tersimpan
+    // (mis. field _token dari form otomatis dibuang).
+    protected static function filterColumns(string $model, array $attributes): array
+    {
+        $instance = new $model;
+        $table = $instance->getTable();
+
+        $columns = self::$columns[$table] ??= $instance->getConnection()
+            ->getSchemaBuilder()
+            ->getColumnListing($table);
+
+        return array_intersect_key($attributes, array_flip($columns));
     }
 }
