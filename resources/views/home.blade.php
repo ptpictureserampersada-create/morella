@@ -476,7 +476,7 @@
               <x-t id="Kalender Kegiatan" en="Upcoming Calendar" />
             </div>
             <h3 class="font-serif text-2xl font-bold text-stone-900">
-              <x-t id="Agenda & Event Desa" en="Village Agenda & Events" />
+              <x-t id="Agenda & Event Negeri Morella" en="Village Agenda & Events" />
             </h3>
           </div>
           <a

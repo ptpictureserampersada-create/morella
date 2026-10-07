@@ -41,13 +41,23 @@
       {{-- Image container --}}
       <div class="max-w-5xl max-h-[85vh] flex flex-col items-center">
         <div class="relative overflow-hidden rounded-xl bg-stone-900 flex items-center justify-center max-h-[72vh]">
-          <img
-            :src="gallery[$store.modals.lightboxIndex].imageUrl"
-            :alt="gallery[$store.modals.lightboxIndex].title"
-            referrerpolicy="no-referrer"
-            class="max-h-[72vh] max-w-full object-contain rounded-xl select-none"
-            onerror="this.style.display = 'none'"
-          />
+          <template x-if="gallery[$store.modals.lightboxIndex].videoUrl">
+            <video
+              :src="gallery[$store.modals.lightboxIndex].videoUrl"
+              class="max-h-[72vh] max-w-full object-contain rounded-xl select-none"
+              controls
+              autoplay
+            ></video>
+          </template>
+          <template x-if="!gallery[$store.modals.lightboxIndex].videoUrl">
+            <img
+              :src="gallery[$store.modals.lightboxIndex].imageUrl"
+              :alt="gallery[$store.modals.lightboxIndex].title"
+              referrerpolicy="no-referrer"
+              class="max-h-[72vh] max-w-full object-contain rounded-xl select-none"
+              onerror="this.style.display = 'none'"
+            />
+          </template>
         </div>
 
         {{-- Caption & Metadata strip --}}

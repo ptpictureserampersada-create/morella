@@ -54,13 +54,18 @@
         @click="$store.modals.openLightbox(gallery.findIndex((g) => g.id === photo.id))"
         class="group relative bg-stone-900 rounded-2xl overflow-hidden shadow-xs hover:shadow-lg transition-all cursor-pointer aspect-4/3"
       >
-        <img
-          :src="photo.imageUrl"
-          :alt="photo.title"
-          referrerpolicy="no-referrer"
-          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
-          onerror="this.style.display = 'none'"
-        />
+        <template x-if="photo.videoUrl">
+          <video :src="photo.videoUrl" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100" muted loop playsinline onmouseover="this.play()" onmouseout="this.pause()"></video>
+        </template>
+        <template x-if="!photo.videoUrl">
+          <img
+            :src="photo.imageUrl"
+            :alt="photo.title"
+            referrerpolicy="no-referrer"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
+            onerror="this.style.display = 'none'"
+          />
+        </template>
 
         {{-- Gradient Overlay --}}
         <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>

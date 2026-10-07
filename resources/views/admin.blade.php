@@ -816,7 +816,12 @@ $adminData = [
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <template x-for="g in gallery" :key="g.id">
             <div class="relative rounded-xl overflow-hidden border border-stone-200 group bg-stone-100">
-              <img :src="g.imageUrl" :alt="g.title" class="w-full h-32 object-cover" />
+              <template x-if="g.videoUrl">
+                <video :src="g.videoUrl" class="w-full h-32 object-cover bg-stone-900" controls preload="metadata"></video>
+              </template>
+              <template x-if="!g.videoUrl">
+                <img :src="g.imageUrl" :alt="g.title" class="w-full h-32 object-cover" onerror="this.style.display='none'" />
+              </template>
               <div class="p-2 text-[11px] font-semibold truncate bg-white" x-text="g.title"></div>
               <form method="POST" :action="entityUrl('galeri', g.id, 'hapus')" class="absolute top-2 right-2">
                 @csrf
@@ -1613,7 +1618,7 @@ $adminData = [
               </button>
             </div>
 
-            <form method="POST" action="{{ route('admin.create', ['entity' => 'galeri']) }}" class="space-y-4 pt-4 text-xs">
+            <form method="POST" action="{{ route('admin.create', ['entity' => 'galeri']) }}" class="space-y-4 pt-4 text-xs" enctype="multipart/form-data">
               @csrf
               <div>
                 <label class="font-semibold text-stone-700 block mb-1">Judul Foto</label>
@@ -1661,6 +1666,18 @@ $adminData = [
                   x-model="newGallery.imageUrl"
                   class="w-full px-3 py-2 border border-stone-300 rounded-lg font-mono text-[11px]"
                   placeholder="https://... atau klik Upload Lokal"
+                />
+              </div>
+
+              <div>
+                <label class="font-semibold text-stone-700 block mb-1">
+                  Upload Video Lokal <span class="font-normal text-stone-500">(Maks 500 MB)</span>
+                </label>
+                <input
+                  type="file"
+                  name="video"
+                  accept="video/*"
+                  class="w-full px-3 py-1.5 border border-stone-300 rounded-lg text-stone-600 bg-stone-50"
                 />
               </div>
 
