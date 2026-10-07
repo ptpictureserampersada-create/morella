@@ -16,7 +16,7 @@
 
         <div class="text-center space-y-1 mb-5">
           <span class="text-[11px] font-semibold text-emerald-700 uppercase tracking-widest">
-            <x-t id="QR Code Resmi Wisata Desa Morela" en="Official Morela Tourism QR" />
+            <x-t id="QR Code Resmi Wisata Desa Morela" en="Official Negeri Morella QR" />
           </span>
           <h3 class="font-serif text-xl font-bold text-stone-900" x-text="$store.modals.qr.title"></h3>
           <p class="text-xs text-stone-500" x-text="$store.modals.qr.subtitle"></p>

@@ -5,7 +5,7 @@
     ['labelId' => 'Arsip Budaya & Tradisi Pukul Sapu', 'labelEn' => 'Culture & Pukul Sapu Archive', 'route' => 'culture'],
     ['labelId' => 'Katalog UMKM & Oleh-oleh', 'labelEn' => 'Local Artisan Crafts & Market', 'route' => 'umkm'],
     ['labelId' => 'Peta Interaktif Leihitu', 'labelEn' => 'Interactive Map of Leihitu', 'route' => 'map'],
-    ['labelId' => 'Dashboard Pengelola Desa', 'labelEn' => 'Village Administration Dashboard', 'route' => 'admin'],
+    ['labelId' => 'Dashboard Pengelola Negeri', 'labelEn' => 'Village Administration Dashboard', 'route' => 'admin'],
   ];
 
   $visitNow = \Illuminate\Support\Carbon::now('Asia/Jayapura');
@@ -19,28 +19,19 @@
 
       {{-- Column 1: Portal Identity --}}
       <div class="space-y-4">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-800 flex items-center justify-center text-white shadow-md border border-emerald-500/30">
-            <x-icon name="Compass" class="w-5 h-5 text-emerald-200" />
-          </div>
-          <span class="font-serif text-xl font-bold tracking-tight text-white">
-            MORELA TOURISM
-          </span>
-        </div>
+        <span class="font-serif text-xl font-bold tracking-tight text-white">
+          NEGERI MORELLA
+        </span>
         <p class="text-xs text-stone-400 leading-relaxed">
           <x-t
-            id="Portal Digital Pariwisata Desa Morela: Media promosi keindahan alam pesisir, cagar budaya sakral, serta etalase produk UMKM kreatif masyarakat Leihitu, Maluku Tengah."
-            en="Digital Tourism Portal of Morela Village: Promoting pristine coastal landscapes, sacred cultural heritage, and artisanal creative local crafts of Leihitu, Central Maluku."
+            id="Portal Digital Pariwisata Negeri Morella: Media promosi keindahan alam pesisir, cagar budaya sakral, serta etalase produk UMKM kreatif masyarakat Leihitu, Maluku Tengah."
+            en="Digital Tourism Portal of Morella Village: Promoting pristine coastal landscapes, sacred cultural heritage, and artisanal creative local crafts of Leihitu, Central Maluku."
           />
         </p>
         <div class="text-xs text-stone-400 pt-2 space-y-1">
           <div class="flex items-center gap-2">
             <x-icon name="MapPin" class="w-3.5 h-3.5 text-emerald-500 shrink-0" />
             <span>{{ $contactInfo['address'] ?? '' }}</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <x-icon name="Phone" class="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-            <span>{{ $contactInfo['phone'] ?? '' }}</span>
           </div>
         </div>
       </div>
@@ -57,8 +48,8 @@
           </div>
           <p class="text-[11px] text-stone-300 leading-relaxed">
             <x-t
-              id="Program Pengabdian Masyarakat Mahasiswa: &quot;Digitalisasi Potensi Pariwisata dan Ekonomi Kreatif Desa Morela&quot;."
-              en="Student Community Service Program: &quot;Digitalization of Tourism & Creative Economy in Morela Village&quot;."
+              id="Program Pengabdian Masyarakat Mahasiswa: &quot;Digitalisasi Potensi Pariwisata dan Ekonomi Kreatif Negeri Morella&quot;."
+              en="Student Community Service Program: &quot;Digitalization of Tourism & Creative Economy in Morella Village&quot;."
             />
           </p>
           <a
@@ -111,7 +102,7 @@
 
     <div class="mt-12 pt-8 border-t border-stone-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-400 gap-4">
       <p>
-        © 2026 Pemerintah Negeri Morela &amp; Program Pengabdian Mahasiswa Universitas Darussalam Ambon. Hak Cipta Dilindungi.
+        © 2026 Pemerintah Negeri Morella &amp; Program Pengabdian Mahasiswa Universitas Darussalam Ambon. Hak Cipta Dilindungi.
       </p>
       <div class="flex items-center gap-4">
         <span>Kecamatan Leihitu, Maluku Tengah</span>

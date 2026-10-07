@@ -67,8 +67,8 @@
             @click="morelaWhatsApp(
               $store.modals.product.sellerPhone,
               $store.ui.lang === 'id'
-                ? ('Halo ' + $store.modals.product.sellerName + ' (' + $store.modals.product.sellerGroup + '), saya tertarik memesan produk &quot;' + $store.modals.product.name + '&quot; (' + $store.modals.product.priceFormatted + '/' + $store.modals.product.unit + ') yang saya lihat di portal Morela Tourism.')
-                : ('Hello ' + $store.modals.product.sellerName + ', I would like to order &quot;' + ($store.modals.product.nameEn || $store.modals.product.name) + '&quot; (' + $store.modals.product.priceFormatted + '/' + $store.modals.product.unit + ') from the Morela Tourism marketplace.')
+                ? ('Halo ' + $store.modals.product.sellerName + ' (' + $store.modals.product.sellerGroup + '), saya tertarik memesan produk &quot;' + $store.modals.product.name + '&quot; (' + $store.modals.product.priceFormatted + '/' + $store.modals.product.unit + ') yang saya lihat di portal Negeri Morella.')
+                : ('Hello ' + $store.modals.product.sellerName + ', I would like to order &quot;' + ($store.modals.product.nameEn || $store.modals.product.name) + '&quot; (' + $store.modals.product.priceFormatted + '/' + $store.modals.product.unit + ') from the Negeri Morella marketplace.')
             )"
             class="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-sm font-semibold transition-colors shadow-sm"
           >

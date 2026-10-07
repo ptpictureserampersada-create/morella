@@ -29,10 +29,7 @@
     <div class="flex items-center justify-between h-16 sm:h-20">
 
       {{-- Zone 1: Brand title wordmark --}}
-      <a href="{{ route('home') }}" class="flex items-center gap-3 text-left group focus-visible:outline-none">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-800 flex items-center justify-center text-white shadow-md shadow-emerald-950/40 border border-emerald-500/30 group-hover:scale-105 transition-transform">
-          <x-icon name="Compass" class="w-5 h-5 text-emerald-200" />
-        </div>
+      <a href="{{ route('home') }}" class="flex items-center text-left group focus-visible:outline-none">
         <div>
           <div class="font-serif text-lg sm:text-xl font-bold tracking-tight text-white flex items-center gap-2">
             Negeri Morella

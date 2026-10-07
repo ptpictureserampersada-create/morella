@@ -257,8 +257,8 @@
         const phone = prod.sellerPhone.replace(/[^0-9]/g, '');
         const message = encodeURIComponent(
           $store.ui.lang === 'id'
-            ? `Halo ${prod.sellerName} (${prod.sellerGroup}), saya tertarik memesan produk "${prod.name}" (${prod.priceFormatted}/${prod.unit}) yang saya temukan di portal Morela Tourism.`
-            : `Hello ${prod.sellerName}, I would like to purchase "${prod.nameEn || prod.name}" from the Morela Tourism marketplace.`
+            ? `Halo ${prod.sellerName} (${prod.sellerGroup}), saya tertarik memesan produk "${prod.name}" (${prod.priceFormatted}/${prod.unit}) yang saya temukan di portal Negeri Morella.`
+            : `Hello ${prod.sellerName}, I would like to purchase "${prod.nameEn || prod.name}" from the Negeri Morella marketplace.`
         );
         window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
       },

@@ -71,36 +71,47 @@ $adminData = [
           </p>
         </div>
 
-        <div class="p-3 bg-stone-800/90 rounded-2xl border border-stone-700/80 space-y-1.5 self-stretch md:self-auto">
-          <div class="text-[10px] text-stone-400 uppercase font-semibold">
-            Pilih Mode Akses Pengguna (Role):
+        <div class="flex flex-col gap-2 self-stretch md:self-auto">
+          <div class="p-3 bg-stone-800/90 rounded-2xl border border-stone-700/80 space-y-1.5">
+            <div class="text-[10px] text-stone-400 uppercase font-semibold">
+              Pilih Mode Akses Pengguna (Role):
+            </div>
+            <div class="flex items-center gap-1 text-xs">
+              <button
+                type="button"
+                @click="$store.ui.setRole('admin_desa')"
+                :class="$store.ui.role === 'admin_desa' ? 'bg-emerald-600 text-white shadow-xs' : 'text-stone-300 hover:text-white hover:bg-stone-700'"
+                class="px-3 py-1.5 rounded-lg font-medium transition-all"
+              >
+                Admin Desa
+              </button>
+              <button
+                type="button"
+                @click="$store.ui.setRole('mahasiswa')"
+                :class="$store.ui.role === 'mahasiswa' ? 'bg-emerald-600 text-white shadow-xs' : 'text-stone-300 hover:text-white hover:bg-stone-700'"
+                class="px-3 py-1.5 rounded-lg font-medium transition-all"
+              >
+                Mahasiswa UNIDAR
+              </button>
+              <button
+                type="button"
+                @click="$store.ui.setRole('pengunjung')"
+                :class="$store.ui.role === 'pengunjung' ? 'bg-emerald-600 text-white shadow-xs' : 'text-stone-300 hover:text-white hover:bg-stone-700'"
+                class="px-3 py-1.5 rounded-lg font-medium transition-all"
+              >
+                Tinjau Pengunjung
+              </button>
+            </div>
           </div>
-          <div class="flex items-center gap-1 text-xs">
-            <button
-              type="button"
-              @click="$store.ui.setRole('admin_desa')"
-              :class="$store.ui.role === 'admin_desa' ? 'bg-emerald-600 text-white shadow-xs' : 'text-stone-300 hover:text-white hover:bg-stone-700'"
-              class="px-3 py-1.5 rounded-lg font-medium transition-all"
-            >
-              Admin Desa
-            </button>
-            <button
-              type="button"
-              @click="$store.ui.setRole('mahasiswa')"
-              :class="$store.ui.role === 'mahasiswa' ? 'bg-emerald-600 text-white shadow-xs' : 'text-stone-300 hover:text-white hover:bg-stone-700'"
-              class="px-3 py-1.5 rounded-lg font-medium transition-all"
-            >
-              Mahasiswa UNIDAR
-            </button>
-            <button
-              type="button"
-              @click="$store.ui.setRole('pengunjung')"
-              :class="$store.ui.role === 'pengunjung' ? 'bg-emerald-600 text-white shadow-xs' : 'text-stone-300 hover:text-white hover:bg-stone-700'"
-              class="px-3 py-1.5 rounded-lg font-medium transition-all"
-            >
-              Tinjau Pengunjung
-            </button>
-          </div>
+
+          <button
+            type="button"
+            @click="logout()"
+            class="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-semibold transition-colors shadow-xs"
+          >
+            <x-icon name="LogOut" class="w-3.5 h-3.5" />
+            <span>Keluar (Logout)</span>
+          </button>
         </div>
       </div>
 
@@ -1858,6 +1869,16 @@ function adminView(data) {
         alert('Kata sandi salah!');
         this.passwordInput = '';
       }
+    },
+
+    logout() {
+      this.isAuthenticated = false;
+      this.passwordInput = '';
+      this.activeTab = 'overview';
+      try {
+        sessionStorage.removeItem('morela_admin_ok');
+        sessionStorage.removeItem('morela_admin_tab');
+      } catch (e) {}
     },
 
     setTab(tab) {

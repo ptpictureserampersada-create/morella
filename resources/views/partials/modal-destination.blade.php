@@ -137,8 +137,8 @@
               @click="morelaWhatsApp(
                 $store.modals.destination.contactPhone,
                 $store.ui.lang === 'id'
-                  ? ('Halo ' + $store.modals.destination.contactName + ', saya ingin bertanya tentang informasi kunjungan ke ' + $store.modals.destination.name + ' melalui portal Morela Tourism.')
-                  : ('Hello ' + $store.modals.destination.contactName + ', I would like to inquire about visiting ' + ($store.modals.destination.nameEn || $store.modals.destination.name) + ' via Morela Tourism portal.')
+                  ? ('Halo ' + $store.modals.destination.contactName + ', saya ingin bertanya tentang informasi kunjungan ke ' + $store.modals.destination.name + ' melalui portal Negeri Morella.')
+                  : ('Hello ' + $store.modals.destination.contactName + ', I would like to inquire about visiting ' + ($store.modals.destination.nameEn || $store.modals.destination.name) + ' via Negeri Morella portal.')
               )"
               class="flex items-center gap-2 px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-semibold transition-colors shadow-xs"
             >

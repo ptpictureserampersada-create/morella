@@ -20,7 +20,7 @@ $ticketData = [
       <x-t id="Sistem Pembayaran E-Tiket Resmi" en="Official E-Ticketing System" />
     </div>
     <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-stone-900 tracking-tight">
-      <x-t id="Tiket Wisata & Retribusi Desa Morela" en="Morela Tourism E-Ticketing" />
+      <x-t id="Tiket Wisata & Retribusi Desa Morela" en="Negeri Morella E-Ticketing" />
     </h1>
     <p class="text-sm text-stone-600 leading-relaxed max-w-prose"
       data-i18n-id="Pesan tiket masuk wisata Negeri Morela secara online, cepat, dan transparan. Mendukung pembayaran instan melalui QRIS Nasional (Bank Maluku Malut, BCA, BRI, Mandiri, e-Wallet) dan Virtual Account."
@@ -421,7 +421,7 @@ $ticketData = [
             <div class="p-5 rounded-2xl bg-stone-900 text-white space-y-4">
               <div class="flex items-center justify-between border-b border-stone-800 pb-3">
                 <div class="text-[10px] text-emerald-400 font-mono tracking-widest uppercase">
-                  MORELA TOURISM · E-TICKET PASS
+                  NEGERI MORELLA · E-TICKET PASS
                 </div>
                 <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-600 text-white font-semibold">
                   CONFIRMED (LUNAS)

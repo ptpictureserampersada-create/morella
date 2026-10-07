@@ -9,7 +9,7 @@
     },
     shareWhatsApp(ticket) {
       const text = encodeURIComponent(
-        'E-Tiket Resmi Morela Tourism:\n' +
+        'E-Tiket Resmi Negeri Morella:\n' +
         'Kode Booking: ' + ticket.bookingCode + '\n' +
         'Destinasi: ' + ticket.destinationName + '\n' +
         'Tanggal: ' + ticket.visitDate + '\n' +
@@ -41,9 +41,6 @@
         {{-- E-Ticket Header Strip --}}
         <div class="bg-gradient-to-r from-emerald-800 via-teal-800 to-stone-900 text-white p-6 pb-8 relative overflow-hidden">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-xs flex items-center justify-center border border-white/20">
-              <x-icon name="Compass" class="w-5 h-5 text-emerald-300" />
-            </div>
             <div>
               <span class="text-[10px] uppercase font-semibold tracking-widest text-emerald-300">
                 PEMERINTAH NEGERI MORELA &amp; POKDARWIS

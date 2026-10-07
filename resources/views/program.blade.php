@@ -4,7 +4,7 @@
 $programPillars = [
     [
         'title' => 'Pilar 1: Digitalisasi Pariwisata & Media Web Portal',
-        'desc' => 'Pembangunan website resmi terintegrasi "Morela Tourism", penyusunan katalog informasi destinasi, dan implementasi QR Code di titik-titik wisata desa.',
+        'desc' => 'Pembangunan website resmi terintegrasi "Negeri Morella", penyusunan katalog informasi destinasi, dan implementasi QR Code di titik-titik wisata desa.',
         'icon' => '🌐',
     ],
     [
