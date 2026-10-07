@@ -20,11 +20,11 @@ $ticketData = [
       <x-t id="Sistem Pembayaran E-Tiket Resmi" en="Official E-Ticketing System" />
     </div>
     <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-stone-900 tracking-tight">
-      <x-t id="Tiket Wisata & Retribusi Desa Morela" en="Negeri Morella E-Ticketing" />
+      <x-t id="Tiket Wisata & Retribusi Negeri Morella" en="Negeri Morella E-Ticketing" />
     </h1>
     <p class="text-sm text-stone-600 leading-relaxed max-w-prose"
-      data-i18n-id="Pesan tiket masuk wisata Negeri Morela secara online, cepat, dan transparan. Mendukung pembayaran instan melalui QRIS Nasional (Bank Maluku Malut, BCA, BRI, Mandiri, e-Wallet) dan Virtual Account."
-      data-i18n-en="Book tourist entrance tickets online for Morela destinations with instant cashless payments via QRIS, Virtual Account, or on-site counter payments."></p>
+      data-i18n-id="Pesan tiket masuk wisata Negeri Morella secara online, cepat, dan transparan. Mendukung pembayaran instan melalui QRIS Nasional (Bank Maluku Malut, BCA, BRI, Mandiri, e-Wallet) dan Virtual Account."
+      data-i18n-en="Book tourist entrance tickets online for Morella destinations with instant cashless payments via QRIS, Virtual Account, or on-site counter payments."></p>
   </div>
 
   {{-- Navigation Sub-Tabs --}}
@@ -273,7 +273,7 @@ $ticketData = [
                     </span>
                   </div>
                   <p class="text-[11px] text-stone-500 leading-tight">
-                    Bayar tunai di pos loket masuk Pokdarwis Morela.
+                    Bayar tunai di pos loket masuk Pokdarwis Morella.
                   </p>
                 </div>
               </div>
@@ -460,7 +460,7 @@ $ticketData = [
               </button>
 
               <a
-                :href="'https://wa.me/?text=' + encodeURIComponent('E-Tiket Wisata Morela:\nKode: ' + currentBooking.bookingCode + '\nDestinasi: ' + currentBooking.destinationName + '\nTanggal: ' + currentBooking.visitDate)"
+                :href="'https://wa.me/?text=' + encodeURIComponent('E-Tiket Wisata Morella:\nKode: ' + currentBooking.bookingCode + '\nDestinasi: ' + currentBooking.destinationName + '\nTanggal: ' + currentBooking.visitDate)"
                 target="_blank"
                 rel="noreferrer"
                 class="w-full py-3 bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-semibold rounded-xl flex items-center justify-center gap-2"
@@ -546,7 +546,7 @@ $ticketData = [
             <div class="p-3 bg-emerald-50/60 rounded-xl border border-emerald-100 flex items-start gap-2 text-[11px] text-emerald-950">
               <x-icon name="ShieldCheck" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
               <span>
-                Dana retribusi dikelola secara transparan oleh Pemerintah Negeri Morela untuk pembersihan pantai dan pelestarian terumbu karang.
+                Dana retribusi dikelola secara transparan oleh Pemerintah Negeri Morella untuk pembersihan pantai dan pelestarian terumbu karang.
               </span>
             </div>
           </div>
@@ -555,7 +555,7 @@ $ticketData = [
         {{-- Quick Benefits --}}
         <div class="p-5 rounded-3xl bg-stone-900 text-stone-200 space-y-3 text-xs">
           <div class="font-semibold text-white uppercase text-[10px] tracking-wider text-amber-400">
-            Keuntungan Tiket Online Morela
+            Keuntungan Tiket Online Morella
           </div>
           <ul class="space-y-2 text-[11px]">
             <li class="flex items-center gap-2">
@@ -664,7 +664,7 @@ $ticketData = [
             Tarif Retribusi Resmi & Regulasi Wisatawan
           </h3>
           <p class="text-xs text-stone-500">
-            Berdasarkan Keputusan Musyawarah Saniri & Pemerintah Negeri Morela tahun 2026.
+            Berdasarkan Keputusan Musyawarah Saniri & Pemerintah Negeri Morella tahun 2026.
           </p>
         </div>
 
@@ -700,7 +700,7 @@ $ticketData = [
           <ul class="list-disc list-inside space-y-1 text-[11px]">
             <li>Dilarang menginjak, mengambil, atau merusak karang laut di sekitar Pantai Lubang Buaya.</li>
             <li>Wisatawan wajib menjaga kebersihan dan membuang sampah pada tempat yang disediakan.</li>
-            <li>Hormati kearifan lokal adat dan busana sopan saat berkunjung ke situs sejarah dan permukiman adat Morela.</li>
+            <li>Hormati kearifan lokal adat dan busana sopan saat berkunjung ke situs sejarah dan permukiman adat Morella.</li>
           </ul>
         </div>
       </div>

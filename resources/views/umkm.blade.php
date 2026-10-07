@@ -21,11 +21,11 @@
       <x-t id="Pemberdayaan Ekonomi Masyarakat" en="Community Artisan Market" />
     </div>
     <h1 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900 tracking-tight">
-      <x-t id="UMKM & Produk Kreatif Desa Morela" en="Local Crafts & Artisans of Morela" />
+      <x-t id="UMKM & Produk Kreatif Negeri Morella" en="Local Crafts & Artisans of Morella" />
     </h1>
     <p class="text-sm text-stone-600 leading-relaxed">
       <x-t
-        id="Dukung langsung perekonomian kelompok usaha ibu-ibu dan petani Negeri Morela. Dapatkan minyak kayu putih sulingan asli Leihitu, kenari gula aren, olahan pala berkualitas ekspor, dan anyaman lontar etnik."
+        id="Dukung langsung perekonomian kelompok usaha ibu-ibu dan petani Negeri Morella. Dapatkan minyak kayu putih sulingan asli Leihitu, kenari gula aren, olahan pala berkualitas ekspor, dan anyaman lontar etnik."
         en="Directly support village home industries and cooperative artisans. Purchase authentic steam-distilled cajuput eucalyptus oil, canarium brittle, nutmeg delicacies, and handwoven crafts."
       />
     </p>
@@ -216,7 +216,7 @@
       </h4>
       <p class="text-xs text-emerald-200">
         <x-t
-          id="Posko KKN Mahasiswa UNIDAR dan Koperasi Desa Morela siap membantu pengemasan bingkisan resmi."
+          id="Posko KKN Mahasiswa UNIDAR dan Koperasi Negeri Morella siap membantu pengemasan bingkisan resmi."
           en="Village cooperative and UNIDAR community team assist with customized gift boxes and national deliveries."
         />
       </p>

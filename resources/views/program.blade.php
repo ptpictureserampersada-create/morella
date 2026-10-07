@@ -25,7 +25,7 @@ $programPillars = [
 ];
 
 $outcomes = [
-    ['metric' => '1 Portal', 'label' => 'Website Pariwisata Resmi Desa Morela Berbasis Web & Mobile'],
+    ['metric' => '1 Portal', 'label' => 'Website Pariwisata Resmi Negeri Morella Berbasis Web & Mobile'],
     ['metric' => '100% QR Code', 'label' => 'Destinasi Wisata Dilengkapi Kode Respons Cepat Pindai'],
     ['metric' => '6 Produk', 'label' => 'UMKM Didampingi Desain Kemasan & Pemasaran Online'],
     ['metric' => '30+ Pemuda', 'label' => 'Tergabung dalam Pelatihan Sadar Wisata Digital Pokdarwis'],
@@ -47,15 +47,15 @@ $outcomes = [
         </h1>
 
         <div class="p-4 rounded-xl bg-stone-100 border-l-4 border-emerald-600 text-stone-800 text-sm font-medium">
-            &ldquo;Digitalisasi Potensi Pariwisata dan Ekonomi Kreatif Desa Morela, Kecamatan Leihitu, Kabupaten Maluku Tengah&rdquo;
+            &ldquo;Digitalisasi Potensi Pariwisata dan Ekonomi Kreatif Negeri Morella, Kecamatan Leihitu, Kabupaten Maluku Tengah&rdquo;
         </div>
 
         <p class="text-xs sm:text-sm text-stone-600 leading-relaxed max-w-prose">
-            Program kolaborasi terpadu antara civitas akademika Universitas Darussalam Ambon bersama Pemerintah Negeri Morela, Lembaga Adat Saniri Negeri, dan Kelompok Sadar Wisata (Pokdarwis) guna mengoptimalkan potensi bahari dan nilai luhur budaya Morela.
+            Program kolaborasi terpadu antara civitas akademika Universitas Darussalam Ambon bersama Pemerintah Negeri Morella, Lembaga Adat Saniri Negeri, dan Kelompok Sadar Wisata (Pokdarwis) guna mengoptimalkan potensi bahari dan nilai luhur budaya Morella.
         </p>
     </div>
 
-    {{-- Profil Universitas & Mitra Desa --}}
+    {{-- Profil Universitas & Mitra Negeri --}}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="p-6 sm:p-8 bg-white rounded-2xl border border-stone-200 shadow-xs space-y-4">
             <div class="flex items-center gap-3">
@@ -83,7 +83,7 @@ $outcomes = [
                 </div>
                 <div>
                     <h3 class="font-serif text-lg font-bold text-stone-900">
-                        Pemerintah Negeri Adat Morela
+                        Pemerintah Negeri Adat Morella
                     </h3>
                     <p class="text-xs text-stone-500">
                         Mitra Strategis & Tuan Rumah Program Pengabdian
@@ -91,7 +91,7 @@ $outcomes = [
                 </div>
             </div>
             <p class="text-xs text-stone-600 leading-relaxed">
-                Pemerintah Negeri Morela bersama Bapa Raja, Saniri Negeri, dan Pokdarwis memberikan dukungan penuh terhadap proses riset lapangan, wawancara adat, hingga keberlanjutan pemeliharaan infrastruktur portal pariwisata.
+                Pemerintah Negeri Morella bersama Bapa Raja, Saniri Negeri, dan Pokdarwis memberikan dukungan penuh terhadap proses riset lapangan, wawancara adat, hingga keberlanjutan pemeliharaan infrastruktur portal pariwisata.
             </p>
         </div>
     </div>

@@ -24,7 +24,7 @@
       <x-t id="Navigasi Spasial Desa" en="Spatial Navigation & Wayfinding" />
     </div>
     <h1 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900 tracking-tight">
-      <x-t id="Peta Wisata & Jelajah Negeri Morela" en="Explore Morela: Interactive Tourist Map" />
+      <x-t id="Peta Wisata & Jelajah Negeri Morella" en="Explore Morella: Interactive Tourist Map" />
     </h1>
     <p class="text-sm text-stone-600 leading-relaxed">
       <x-t
@@ -65,7 +65,7 @@
       {{-- Interactive SVG Map Viewport (2 Columns on large) --}}
       <div class="lg:col-span-2 relative bg-sky-900/10 min-h-[420px] sm:min-h-[500px] overflow-hidden select-none border-b lg:border-b-0 lg:border-r border-stone-200 flex items-center justify-center p-2 sm:p-4">
 
-        {{-- Custom SVG Coastal Cartography of Morela / Leihitu --}}
+        {{-- Custom SVG Coastal Cartography of Morella / Leihitu --}}
         <svg viewBox="0 0 1000 600" class="w-full h-full max-h-[560px] object-contain drop-shadow-sm">
           <defs>
             {{-- Sea Water Gradient --}}
@@ -118,7 +118,7 @@
             fill="url(#reefGrad)"
           />
 
-          {{-- Main Landmass of Morela Peninsula --}}
+          {{-- Main Landmass of Morella Peninsula --}}
           <path
             d="M 0,260 Q 180,230 320,240 Q 420,210 520,230 Q 640,240 760,220 Q 880,250 1000,280 L 1000,600 L 0,600 Z"
             fill="url(#landGrad)"
@@ -149,7 +149,7 @@
           {{-- Village Settlement Blocks --}}
           <rect x="460" y="310" width="80" height="40" rx="4" fill="#fbbf24" opacity="0.3" />
           <text x="500" y="335" fill="#92400e" font-size="11" font-weight="bold" text-anchor="middle">
-            NEGERI MORELA
+            NEGERI MORELLA
           </text>
 
           {{-- Compass Rose --}}
@@ -274,14 +274,14 @@
     </div>
   </div>
 
-  {{-- How to Reach Morela (Panduan Rute Wisatawan) --}}
+  {{-- How to Reach Morella (Panduan Rute Wisatawan) --}}
   <div class="bg-stone-50 rounded-2xl border border-stone-200 p-6 sm:p-8 space-y-6">
     <div class="space-y-1">
       <span class="text-xs font-semibold uppercase tracking-widest text-emerald-800">
         <x-t id="Aksesibilitas & Petunjuk Perjalanan" en="Travel Guide & Accessibility" />
       </span>
       <h3 class="font-serif text-xl font-bold text-stone-900">
-        <x-t id="Cara Menuju Desa Morela dari Kota Ambon" en="How to Reach Morela from Ambon City" />
+        <x-t id="Cara Menuju Desa Morella dari Kota Ambon" en="How to Reach Morella from Ambon City" />
       </h3>
     </div>
 
@@ -319,8 +319,8 @@
         </div>
         <p class="leading-relaxed">
           <x-t
-            id="Tersedia angkutan pedesaan trayek Ambon - Hitu - Morela dari Terminal Mardika Ambon. Tarif terjangkau (± Rp 15.000 - Rp 20.000 / orang)."
-            en="Local transport minibuses depart regularly from Mardika Terminal Ambon towards Leihitu and Morela at nominal fares."
+            id="Tersedia angkutan pedesaan trayek Ambon - Hitu - Morella dari Terminal Mardika Ambon. Tarif terjangkau (± Rp 15.000 - Rp 20.000 / orang)."
+            en="Local transport minibuses depart regularly from Mardika Terminal Ambon towards Leihitu and Morella at nominal fares."
           />
         </p>
       </div>

@@ -570,7 +570,7 @@
 
         <p class="text-xs sm:text-sm text-stone-200 font-light leading-relaxed">
           <x-t
-            id="“Digitalisasi Potensi Pariwisata dan Ekonomi Kreatif Desa Morela” — Sinergi civitas akademika, mahasiswa KKN, Pemerintah Negeri Negeri Morella, dan Pokdarwis dalam mewujudkan desa wisata berdaya saing global."
+            id="“Digitalisasi Potensi Pariwisata dan Ekonomi Kreatif Negeri Morella” — Sinergi civitas akademika, mahasiswa KKN, Pemerintah Negeri Negeri Morella, dan Pokdarwis dalam mewujudkan desa wisata berdaya saing global."
             en="“Digitalization of Negeri Morella Village Tourism & Creative Economy” — Academic synergy between UNIDAR students, village government, and customary tourism leaders."
           />
         </p>
