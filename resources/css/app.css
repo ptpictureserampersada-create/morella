@@ -1,0 +1,29 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views';
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+  }
+}
+
+/* Sembunyikan elemen Alpine sebelum inisialisasi */
+[x-cloak] {
+  display: none !important;
+}
+
+/* i18n berbasis CSS: hanya tampilkan teks sesuai bahasa aktif */
+html.lang-en [data-i18n-id],
+html.lang-id [data-i18n-en] {
+  display: none !important;
+}
