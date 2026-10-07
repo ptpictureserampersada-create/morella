@@ -2,35 +2,43 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class AdminSeeder extends Seeder
 {
     public function run()
     {
+        $username = 'admin';
         $email = 'admin@morela.com';
         $password = 'password123';
 
-        $userExists = DB::table('users')->where('email', $email)->first();
+        $admin = User::where('username', $username)->orWhere('email', $email)->first();
 
-        if (!$userExists) {
-            DB::table('users')->insert([
+        if ($admin) {
+            $admin->update([
                 'name' => 'Administrator',
+                'username' => $username,
                 'email' => $email,
-                'password' => Hash::make($password),
-                'created_at' => now(),
-                'updated_at' => now(),
+                'password' => $password,
             ]);
 
-            $this->command->info('=====================================');
-            $this->command->info('Admin berhasil dibuat di Database!');
-            $this->command->info('Email    : ' . $email);
-            $this->command->info('Password : ' . $password);
-            $this->command->info('=====================================');
+            $this->command->warn('Admin sudah ada — kredensial disinkronkan ulang.');
         } else {
-            $this->command->warn('Admin dengan email ' . $email . ' sudah ada di database.');
+            User::create([
+                'name' => 'Administrator',
+                'username' => $username,
+                'email' => $email,
+                'password' => $password,
+            ]);
+
+            $this->command->info('Admin berhasil dibuat di Database!');
         }
+
+        $this->command->info('=====================================');
+        $this->command->info('Username : ' . $username);
+        $this->command->info('Email    : ' . $email);
+        $this->command->info('Password : ' . $password);
+        $this->command->info('=====================================');
     }
 }

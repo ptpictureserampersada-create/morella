@@ -19,7 +19,7 @@ $adminData = [
 @endphp
 
 @section('content')
-<div x-data="adminView({{ Js::from($adminData) }})">
+<div x-data="adminView({{ Js::from($adminData) }}, {{ $isAdminAuthenticated ? 'true' : 'false' }})">
 
   {{-- GERBANG AKSES (belum login) --}}
   <template x-if="!isAuthenticated">
@@ -30,17 +30,33 @@ $adminData = [
         </div>
         <div>
           <h2 class="font-serif text-2xl font-bold text-stone-900">Akses Terkunci</h2>
-          <p class="text-xs text-stone-500 mt-2">Masukkan kata sandi untuk mengakses portal administrasi dan pengelola data.</p>
+          <p class="text-xs text-stone-500 mt-2">Masukkan username dan kata sandi untuk mengakses portal administrasi dan pengelola data.</p>
         </div>
 
-        <form @submit.prevent="doLogin()" class="space-y-4">
+        <form method="POST" action="{{ route('admin.login') }}" class="space-y-4">
+          @csrf
           <input
-            type="password"
-            placeholder="Kata Sandi..."
-            x-model="passwordInput"
+            type="text"
+            name="username"
+            value="{{ old('username') }}"
+            placeholder="Username..."
+            required
             autofocus
             class="w-full px-4 py-3 rounded-xl border border-stone-300 text-sm focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-center"
           />
+          <input
+            type="password"
+            name="password"
+            placeholder="Kata Sandi..."
+            required
+            class="w-full px-4 py-3 rounded-xl border border-stone-300 text-sm focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-center"
+          />
+          @error('username')
+            <p class="text-xs text-red-600 font-medium">{{ $message }}</p>
+          @enderror
+          @error('password')
+            <p class="text-xs text-red-600 font-medium">{{ $message }}</p>
+          @enderror
           <button
             type="submit"
             class="w-full py-3 bg-emerald-700 hover:bg-emerald-600 text-white rounded-xl text-sm font-semibold transition-colors"
@@ -104,14 +120,16 @@ $adminData = [
             </div>
           </div>
 
-          <button
-            type="button"
-            @click="logout()"
-            class="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-semibold transition-colors shadow-xs"
-          >
-            <x-icon name="LogOut" class="w-3.5 h-3.5" />
-            <span>Keluar (Logout)</span>
-          </button>
+          <form method="POST" action="{{ route('admin.logout') }}">
+            @csrf
+            <button
+              type="submit"
+              class="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-semibold transition-colors shadow-xs"
+            >
+              <x-icon name="LogOut" class="w-3.5 h-3.5" />
+              <span>Keluar (Logout)</span>
+            </button>
+          </form>
         </div>
       </div>
 
@@ -276,7 +294,7 @@ $adminData = [
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-stone-600">
             <div class="p-3 bg-stone-50 rounded-xl border border-stone-200">
-              <strong class="text-stone-900">Halaman Terpopuler:</strong> Pantai Lubang Buaya Morela (48% views)
+              <strong class="text-stone-900">Halaman Terpopuler:</strong> Pantai Lubang Buaya Morella (48% views)
             </div>
             <div class="p-3 bg-stone-50 rounded-xl border border-stone-200">
               <strong class="text-stone-900">Pencarian Terbanyak:</strong> "Tradisi Pukul Sapu" &amp; "Minyak Kayu Putih"
@@ -750,7 +768,7 @@ $adminData = [
       <div x-show="activeTab === 'budaya'" class="space-y-4">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <h3 class="font-serif text-xl font-bold text-stone-900">
-            Arsip Kebudayaan &amp; Adat Morela (<span x-text="cultureItems.length"></span> Naskah)
+            Arsip Kebudayaan &amp; Adat Morella (<span x-text="cultureItems.length"></span> Naskah)
           </h3>
           <button
             type="button"
@@ -1095,7 +1113,7 @@ $adminData = [
                   required
                   name="name"
                   x-model="newDest.name"
-                  placeholder="Contoh: Pantai Pasir Putih Morela"
+                  placeholder="Contoh: Pantai Pasir Putih Morella"
                   class="w-full px-3 py-2 border border-stone-300 rounded-lg"
                 />
               </div>
@@ -1164,10 +1182,10 @@ $adminData = [
               <input type="hidden" name="nameEn" value="" />
               <input type="hidden" name="taglineEn" value="" />
               <input type="hidden" name="descriptionEn" value="" />
-              <input type="hidden" name="location" value="Negeri Morela, Kec. Leihitu" />
+              <input type="hidden" name="location" value="Negeri Morella, Kec. Leihitu" />
               <input type="hidden" name="visitingHours" value="Setiap Hari: 07.00 - 18.00 WIT" />
               <input type="hidden" name="ticketPriceNum" value="5000" />
-              <input type="hidden" name="contactName" value="Pokdarwis Desa Morela" />
+              <input type="hidden" name="contactName" value="Pokdarwis Desa Morella" />
               <input type="hidden" name="contactPhone" value="+6281234567801" />
               <input type="hidden" name="featured" value="1" />
               <input type="hidden" name="published" value="1" />
@@ -1275,8 +1293,8 @@ $adminData = [
               <input type="hidden" name="nameEn" value="" />
               <input type="hidden" name="category" value="kuliner" />
               <input type="hidden" name="price" value="25000" />
-              <input type="hidden" name="sellerGroup" value="Kelompok Usaha Warga Morela" />
-              <input type="hidden" name="sellerAddress" value="Negeri Morela, Leihitu" />
+              <input type="hidden" name="sellerGroup" value="Kelompok Usaha Warga Morella" />
+              <input type="hidden" name="sellerAddress" value="Negeri Morella, Leihitu" />
               <input type="hidden" name="description" value="" />
               <input type="hidden" name="descriptionEn" value="" />
               <input type="hidden" name="featured" value="1" />
@@ -1361,7 +1379,7 @@ $adminData = [
 
               <input type="hidden" name="titleEn" value="" />
               <input type="hidden" name="category" value="desa" />
-              <input type="hidden" name="author" value="Tim Humas Desa Morela" />
+              <input type="hidden" name="author" value="Tim Humas Desa Morella" />
               <input type="hidden" name="authorRole" value="Pengelola Informasi" />
               <input type="hidden" name="publishedDate" value="29 September 2026" />
               <input type="hidden" name="readTime" value="3 menit baca" />
@@ -1472,7 +1490,7 @@ $adminData = [
 
               <input type="hidden" name="titleEn" value="" />
               <input type="hidden" name="time" value="09.00 WIT" />
-              <input type="hidden" name="organizer" value="Pemerintah Desa Morela" />
+              <input type="hidden" name="organizer" value="Pemerintah Desa Morella" />
               <input type="hidden" name="category" value="budaya" />
               <input type="hidden" name="descriptionEn" value="" />
               <input type="hidden" name="status" value="upcoming" />
@@ -1747,10 +1765,9 @@ $adminData = [
 </div>
 
 <script>
-function adminView(data) {
+function adminView(data, isAdminAuthenticated) {
   return {
     isAuthenticated: false,
-    passwordInput: '',
     activeTab: 'overview',
 
     destinations: data.destinations || [],
@@ -1826,7 +1843,7 @@ function adminView(data) {
     newEvent: {
       title: '',
       date: '10 Oktober 2026',
-      location: 'Negeri Morela',
+      location: 'Negeri Morella',
       description: '',
       imageUrl: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1000&q=80',
     },
@@ -1840,7 +1857,7 @@ function adminView(data) {
     newGallery: {
       title: '',
       category: 'alam',
-      location: 'Negeri Morela',
+      location: 'Negeri Morella',
       imageUrl: 'https://images.unsplash.com/photo-1599839619722-39751411ea63?auto=format&fit=crop&w=1000&q=80',
     },
     newTeam: {
@@ -1851,33 +1868,17 @@ function adminView(data) {
     },
 
     init() {
+      this.isAuthenticated = isAdminAuthenticated === true;
+
+      if (!this.isAuthenticated) {
+        return;
+      }
+
       try {
-        this.isAuthenticated = sessionStorage.getItem('morela_admin_ok') === '1';
         var tab = sessionStorage.getItem('morela_admin_tab');
         if (tab) {
           this.activeTab = tab;
         }
-      } catch (e) {}
-    },
-
-    doLogin() {
-      if (this.passwordInput === 'morela') {
-        this.isAuthenticated = true;
-        try { sessionStorage.setItem('morela_admin_ok', '1'); } catch (e) {}
-        this.passwordInput = '';
-      } else {
-        alert('Kata sandi salah!');
-        this.passwordInput = '';
-      }
-    },
-
-    logout() {
-      this.isAuthenticated = false;
-      this.passwordInput = '';
-      this.activeTab = 'overview';
-      try {
-        sessionStorage.removeItem('morela_admin_ok');
-        sessionStorage.removeItem('morela_admin_tab');
       } catch (e) {}
     },
 
