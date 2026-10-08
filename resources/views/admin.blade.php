@@ -806,7 +806,7 @@ $adminData = [
           </h3>
           <button
             type="button"
-            @click="isAddGalleryModalOpen = true"
+            @click="galleryVideoError = ''; galleryVideoInfo = ''; isAddGalleryModalOpen = true"
             class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5"
           >
             <x-icon name="Plus" class="w-4 h-4" />
@@ -887,7 +887,7 @@ $adminData = [
           <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
             <div>
               <h4 class="font-serif font-bold text-stone-900 text-base">Pengaturan Slider Latar Belakang (Hero)</h4>
-              <p class="text-xs text-stone-500">Masukkan link URL atau unggah gambar untuk slider (1 baris untuk 1 gambar)</p>
+              <p class="text-xs text-stone-500">Masukkan link URL atau unggah gambar untuk slider (1 baris untuk 1 gambar) · unggahan: min 10 KB, maks 5 MB, dikompres otomatis</p>
             </div>
             <div class="flex items-center gap-2">
               <template x-if="isEditingSliders">
@@ -1182,6 +1182,7 @@ $adminData = [
                   class="w-full px-3 py-2 border border-stone-300 rounded-lg font-mono text-[11px]"
                   placeholder="https://... atau klik Upload Lokal"
                 />
+                <p class="text-[10px] text-stone-400 mt-1">Unggah gambar: min 10 KB, maks 5 MB (dikompres otomatis)</p>
               </div>
 
               <input type="hidden" name="nameEn" value="" />
@@ -1293,6 +1294,7 @@ $adminData = [
                   class="w-full px-3 py-2 border border-stone-300 rounded-lg font-mono text-[11px]"
                   placeholder="https://... atau klik Upload Lokal"
                 />
+                <p class="text-[10px] text-stone-400 mt-1">Unggah gambar: min 10 KB, maks 5 MB (dikompres otomatis)</p>
               </div>
 
               <input type="hidden" name="nameEn" value="" />
@@ -1380,6 +1382,7 @@ $adminData = [
                   class="w-full px-3 py-2 border border-stone-300 rounded-lg font-mono text-[11px]"
                   placeholder="https://... atau klik Upload Lokal"
                 />
+                <p class="text-[10px] text-stone-400 mt-1">Unggah gambar: min 10 KB, maks 5 MB (dikompres otomatis)</p>
               </div>
 
               <input type="hidden" name="titleEn" value="" />
@@ -1475,6 +1478,7 @@ $adminData = [
                   class="w-full px-3 py-2 border border-stone-300 rounded-lg font-mono text-[11px]"
                   placeholder="https://... atau klik Upload Lokal"
                 />
+                <p class="text-[10px] text-stone-400 mt-1">Unggah gambar: min 10 KB, maks 5 MB (dikompres otomatis)</p>
               </div>
 
               <div>
@@ -1585,6 +1589,7 @@ $adminData = [
                   class="w-full px-3 py-2 border border-stone-300 rounded-lg font-mono text-[11px]"
                   placeholder="https://... atau klik Upload Lokal"
                 />
+                <p class="text-[10px] text-stone-400 mt-1">Unggah gambar: min 10 KB, maks 5 MB (dikompres otomatis)</p>
               </div>
 
               <input type="hidden" name="titleEn" value="" />
@@ -1667,18 +1672,22 @@ $adminData = [
                   class="w-full px-3 py-2 border border-stone-300 rounded-lg font-mono text-[11px]"
                   placeholder="https://... atau klik Upload Lokal"
                 />
+                <p class="text-[10px] text-stone-400 mt-1">Unggah gambar: min 10 KB, maks 5 MB (dikompres otomatis)</p>
               </div>
 
               <div>
                 <label class="font-semibold text-stone-700 block mb-1">
-                  Upload Video Lokal <span class="font-normal text-stone-500">(Maks 500 MB)</span>
+                  Upload Video Lokal <span class="font-normal text-stone-500">(min 2 MB, maks 500 MB)</span>
                 </label>
                 <input
                   type="file"
                   name="video"
                   accept="video/*"
+                  @change="validateGalleryVideo($event)"
                   class="w-full px-3 py-1.5 border border-stone-300 rounded-lg text-stone-600 bg-stone-50"
                 />
+                <p x-show="galleryVideoError" x-text="galleryVideoError" class="text-[10px] text-rose-600 font-medium mt-1"></p>
+                <p x-show="galleryVideoInfo" x-text="galleryVideoInfo" class="text-[10px] text-emerald-700 font-medium mt-1"></p>
               </div>
 
               <input type="hidden" name="titleEn" value="" />
@@ -1758,6 +1767,7 @@ $adminData = [
                   class="w-full px-3 py-2 border border-stone-300 rounded-lg font-mono text-[11px]"
                   placeholder="https://... atau klik Upload Lokal"
                 />
+                <p class="text-[10px] text-stone-400 mt-1">Unggah gambar: min 10 KB, maks 5 MB (dikompres otomatis)</p>
               </div>
 
               <input type="hidden" name="university" value="Universitas Darussalam Ambon" />
@@ -1818,6 +1828,8 @@ function adminView(data, isAdminAuthenticated) {
     isAddEventModalOpen: false,
     eventVideoError: '',
     eventVideoInfo: '',
+    galleryVideoError: '',
+    galleryVideoInfo: '',
     isAddCultureModalOpen: false,
     isAddGalleryModalOpen: false,
     isAddTeamModalOpen: false,
@@ -1973,6 +1985,22 @@ function adminView(data, isAdminAuthenticated) {
       var self = this;
       var file = e.target.files && e.target.files[0];
       if (!file) return;
+
+      var minBytes = 10 * 1024;
+      var maxBytes = 5 * 1024 * 1024;
+      var sizeMb = file.size / (1024 * 1024);
+
+      if (file.size < minBytes) {
+        alert('Ukuran gambar minimal 10 KB (file ini ' + Math.round(file.size / 1024) + ' KB).');
+        e.target.value = '';
+        return;
+      }
+      if (file.size > maxBytes) {
+        alert('Ukuran gambar maksimal 5 MB (file ini ' + sizeMb.toFixed(1) + ' MB).');
+        e.target.value = '';
+        return;
+      }
+
       compressImage(file, maxWidth, 0.7)
         .then(function (compressed) {
           self[form][field] = compressed;
@@ -2010,6 +2038,29 @@ function adminView(data, isAdminAuthenticated) {
         return;
       }
       this.eventVideoInfo = file.name + ' (' + sizeMb.toFixed(1) + ' MB) siap diunggah.';
+    },
+
+    validateGalleryVideo(e) {
+      var file = e.target.files && e.target.files[0];
+      this.galleryVideoError = '';
+      this.galleryVideoInfo = '';
+      if (!file) return;
+
+      var minBytes = 2 * 1024 * 1024;
+      var maxBytes = 500 * 1024 * 1024;
+      var sizeMb = file.size / (1024 * 1024);
+
+      if (file.size < minBytes) {
+        this.galleryVideoError = 'Ukuran video minimal 2 MB (file ini ' + sizeMb.toFixed(1) + ' MB).';
+        e.target.value = '';
+        return;
+      }
+      if (file.size > maxBytes) {
+        this.galleryVideoError = 'Ukuran video maksimal 500 MB (file ini ' + sizeMb.toFixed(1) + ' MB).';
+        e.target.value = '';
+        return;
+      }
+      this.galleryVideoInfo = file.name + ' (' + sizeMb.toFixed(1) + ' MB) siap diunggah.';
     },
 
     doCheckIn() {
@@ -2072,6 +2123,22 @@ function adminView(data, isAdminAuthenticated) {
       var self = this;
       var file = e.target.files && e.target.files[0];
       if (!file) return;
+
+      var minBytes = 10 * 1024;
+      var maxBytes = 5 * 1024 * 1024;
+      var sizeMb = file.size / (1024 * 1024);
+
+      if (file.size < minBytes) {
+        alert('Ukuran gambar minimal 10 KB (file ini ' + Math.round(file.size / 1024) + ' KB).');
+        e.target.value = '';
+        return;
+      }
+      if (file.size > maxBytes) {
+        alert('Ukuran gambar maksimal 5 MB (file ini ' + sizeMb.toFixed(1) + ' MB).');
+        e.target.value = '';
+        return;
+      }
+
       compressImage(file, 1920, 0.7)
         .then(function (compressed) {
           self.tempSliders = self.tempSliders ? self.tempSliders + '\n' + compressed : compressed;
