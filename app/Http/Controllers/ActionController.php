@@ -18,6 +18,8 @@ class ActionController extends Controller
         'budaya' => 'culture',
         'galeri' => 'gallery',
         'tim' => 'team',
+        'pengabdian' => 'pengabdian',
+        'sosial' => 'socialLinks',
     ];
 
     // ---------------------------------------------------------------
@@ -181,6 +183,9 @@ class ActionController extends Controller
             case 'team':
                 $item['id'] = "team-{$now}";
                 break;
+            case 'pengabdian':
+                $item['id'] = "pengbd-{$now}";
+                break;
         }
 
         MorelaStore::addEntity($key, $item);
@@ -278,6 +283,18 @@ class ActionController extends Controller
         return back();
     }
 
+
+    public function updateProgramText(Request $request): RedirectResponse
+    {
+        MorelaStore::merge('programText', $request->only([
+            'title', 'subtitle', 'description', 
+            'univTitle', 'univSubtitle', 'univDesc', 
+            'govTitle', 'govSubtitle', 'govDesc'
+        ]));
+
+        return back();
+    }
+
     public function updateHeroText(Request $request): RedirectResponse
     {
         MorelaStore::merge('heroText', $request->only([
@@ -312,6 +329,7 @@ class ActionController extends Controller
             'culture' => 'Naskah budaya berhasil ditambahkan!',
             'gallery' => 'Foto galeri berhasil ditambahkan!',
             'team' => 'Anggota tim berhasil ditambahkan!',
+            'pengabdian' => 'Kegiatan pengabdian berhasil ditambahkan!',
             default => 'Data berhasil disimpan.',
         };
     }

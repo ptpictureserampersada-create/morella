@@ -9,6 +9,7 @@ use App\Models\Event;
 use App\Models\GalleryItem;
 use App\Models\MapMarker;
 use App\Models\NewsArticle;
+use App\Models\PengabdianActivity;
 use App\Models\PortalSetting;
 use App\Models\TeamMember;
 use App\Models\UmkmProduct;
@@ -28,11 +29,13 @@ class MorelaStore
         'culture' => CultureItem::class,
         'gallery' => GalleryItem::class,
         'team' => TeamMember::class,
-        'bookings' => Booking::class,
-        'mapMarkers' => MapMarker::class,
+        'pengabdian' => \App\Models\PengabdianActivity::class,
+        'bookings' => \App\Models\Booking::class,
+        'mapMarkers' => \App\Models\MapMarker::class,
+        'socialLinks' => \App\Models\SocialMediaLink::class,
     ];
 
-    protected const SETTING_KEYS = ['paymentSettings', 'heroSliders', 'contactInfo', 'heroText'];
+    protected const SETTING_KEYS = ['paymentSettings', 'heroSliders', 'contactInfo', 'heroText', 'programText'];
 
     protected static ?array $data = null;
 
@@ -86,6 +89,17 @@ class MorelaStore
             'contactInfo' => [
                 'address' => 'Negeri Morela, Kec. Leihitu, Kab. Maluku Tengah, Maluku',
                 'phone' => '+62 812-3456-7800 (Sekretariat Negeri)',
+            ],
+            'programText' => [
+                'title' => 'Universitas Darussalam Ambon',
+                'subtitle' => '“Digitalisasi Potensi Pariwisata dan Ekonomi Kreatif Negeri Morella, Kecamatan Leihitu, Kabupaten Maluku Tengah”',
+                'description' => 'Program kolaborasi terpadu antara civitas akademika Universitas Darussalam Ambon bersama Pemerintah Negeri Morella, Lembaga Adat Saniri Negeri, dan Kelompok Sadar Wisata (Pokdarwis) guna mengoptimalkan potensi bahari dan nilai luhur budaya Morella.',
+                'univTitle' => 'Universitas Darussalam Ambon (UNIDAR)',
+                'univSubtitle' => 'Lembaga Pendidikan Tinggi Berbasis Keilmuan & Pengabdian di Maluku',
+                'univDesc' => 'Sebagai perguruan tinggi terkemuka di Maluku, UNIDAR Ambon senantiasa berkomitmen menjalankan Tri Dharma Perguruan Tinggi, khususnya pengabdian masyarakat yang berorientasi pada pemecahan masalah riil pedesaan pesisir dan pulau-pulau kecil.',
+                'govTitle' => 'Pemerintah Negeri Adat Morella',
+                'govSubtitle' => 'Mitra Strategis & Tuan Rumah Program Pengabdian',
+                'govDesc' => 'Pemerintah Negeri Morella bersama Bapa Raja, Saniri Negeri, dan Pokdarwis memberikan dukungan penuh terhadap proses riset lapangan, wawancara adat, hingga keberlanjutan pemeliharaan infrastruktur portal pariwisata.',
             ],
             'heroText' => [
                 'badge' => 'Portal Digital Pariwisata Resmi Desa Morela',

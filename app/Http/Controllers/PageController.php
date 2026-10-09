@@ -80,11 +80,13 @@ class PageController extends Controller
             'culture' => [],
             'gallery' => [],
             'team' => [],
+            'pengabdian' => [],
             'bookings' => [],
             'paymentSettings' => [],
             'heroSliders' => [],
             'contactInfo' => [],
             'heroText' => [],
+            'programText' => [],
         ];
 
         return $this->page('admin', 'admin', $data)->with('isAdminAuthenticated', $authenticated);

@@ -10,13 +10,13 @@
     ['id' => 'events', 'labelId' => 'Agenda', 'labelEn' => 'Events', 'route' => 'events'],
     ['id' => 'news', 'labelId' => 'Berita', 'labelEn' => 'News', 'route' => 'news'],
     ['id' => 'gallery', 'labelId' => 'Galeri', 'labelEn' => 'Gallery', 'route' => 'gallery'],
-    ['id' => 'program', 'labelId' => 'Pengabdian UNIDAR', 'labelEn' => 'UNIDAR Program', 'route' => 'program'],
+    ['id' => 'program', 'labelId' => 'Pengabdian', 'labelEn' => 'Community Service', 'route' => 'program'],
   ];
   $moreLinks = [
     ['id' => 'events', 'labelId' => 'Agenda & Kegiatan', 'labelEn' => 'Events & Calendar', 'route' => 'events'],
-    ['id' => 'news', 'labelId' => 'Warta Desa & KKN', 'labelEn' => 'Village & Student News', 'route' => 'news'],
+    ['id' => 'news', 'labelId' => 'Warta Desa', 'labelEn' => 'Village News', 'route' => 'news'],
     ['id' => 'gallery', 'labelId' => 'Galeri Dokumentasi', 'labelEn' => 'Photo Gallery', 'route' => 'gallery'],
-    ['id' => 'program', 'labelId' => 'Pengabdian Mahasiswa UNIDAR', 'labelEn' => 'UNIDAR Community Service', 'route' => 'program'],
+    ['id' => 'program', 'labelId' => 'Pengabdian', 'labelEn' => 'Community Service', 'route' => 'program'],
   ];
   $moreActive = in_array($currentView, ['events', 'news', 'gallery', 'program'], true);
 @endphp
@@ -43,15 +43,42 @@
       {{-- Zone 2: Clean text navigation links (Desktop) --}}
       <nav class="hidden lg:flex items-center gap-1 xl:gap-2 text-sm font-medium">
         @foreach (array_slice($navLinks, 0, 7) as $item)
-          <a
-            href="{{ route($item['route']) }}"
-            class="px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 {{ $currentView === $item['id'] ? 'text-emerald-400 font-semibold bg-stone-800/80' : 'text-stone-300 hover:text-white hover:bg-stone-800/40' }}"
-          >
-            @isset($item['icon'])
-              <x-icon :name="$item['icon']" class="w-3.5 h-3.5 text-emerald-400" />
-            @endisset
-            <span><x-t :id="$item['labelId']" :en="$item['labelEn']" /></span>
-          </a>
+          @if ($item['id'] === 'social')
+            @php 
+              $activeSocial = array_filter($socialLinks ?? [], fn($s) => !empty($s['is_active']));
+              usort($activeSocial, fn($a, $b) => ($a['sort_order'] ?? 0) <=> ($b['sort_order'] ?? 0));
+            @endphp
+            @if(count($activeSocial) > 0)
+              <div class="relative group">
+                <button
+                  type="button"
+                  class="px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 text-stone-300 hover:text-white hover:bg-stone-800/40"
+                >
+                  <span><x-t :id="$item['labelId']" :en="$item['labelEn']" /></span>
+                </button>
+                <div class="absolute right-0 top-full mt-1 w-48 py-2 bg-stone-900 border border-stone-800 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
+                  @foreach($activeSocial as $soc)
+                    <a href="{{ $soc['url'] }}" target="_blank" class="w-full flex items-center gap-3 text-left px-4 py-2 text-sm text-stone-300 hover:text-emerald-400 hover:bg-stone-800">
+                      @if(!empty($soc['icon']))
+                        <x-icon :name="$soc['icon']" class="w-4 h-4" />
+                      @endif
+                      {{ $soc['platform_name'] }}
+                    </a>
+                  @endforeach
+                </div>
+              </div>
+            @endif
+          @else
+            <a
+              href="{{ route($item['route']) }}"
+              class="px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 {{ $currentView === $item['id'] ? 'text-emerald-400 font-semibold bg-stone-800/80' : 'text-stone-300 hover:text-white hover:bg-stone-800/40' }}"
+            >
+              @isset($item['icon'])
+                <x-icon :name="$item['icon']" class="w-3.5 h-3.5 text-emerald-400" />
+              @endisset
+              <span><x-t :id="$item['labelId']" :en="$item['labelEn']" /></span>
+            </a>
+          @endif
         @endforeach
 
         <div class="relative group">
@@ -128,17 +155,48 @@
     class="lg:hidden bg-stone-900 border-b border-stone-800 px-4 pt-2 pb-6 space-y-1 animate-in fade-in slide-in-from-top-2 duration-150"
   >
     @foreach ($navLinks as $item)
-      <a
-        href="{{ route($item['route']) }}"
-        class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium flex items-center justify-between {{ $currentView === $item['id'] ? 'bg-emerald-950/80 text-emerald-400 font-semibold' : 'text-stone-300 hover:bg-stone-800 hover:text-white' }}"
-      >
-        <span class="flex items-center gap-2">
-          @isset($item['icon'])
-            <x-icon :name="$item['icon']" class="w-4 h-4 text-emerald-400" />
-          @endisset
-          <span><x-t :id="$item['labelId']" :en="$item['labelEn']" /></span>
-        </span>
-      </a>
+      @if ($item['id'] === 'social')
+        @php 
+          $activeSocial = array_filter($socialLinks ?? [], fn($s) => !empty($s['is_active']));
+          usort($activeSocial, fn($a, $b) => ($a['sort_order'] ?? 0) <=> ($b['sort_order'] ?? 0));
+        @endphp
+        @if(count($activeSocial) > 0)
+          <div x-data="{ open: false }" class="w-full">
+            <button
+              @click="open = !open"
+              type="button"
+              class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium flex items-center justify-between text-stone-300 hover:bg-stone-800 hover:text-white"
+            >
+              <span class="flex items-center gap-2">
+                <span><x-t :id="$item['labelId']" :en="$item['labelEn']" /></span>
+              </span>
+              <x-icon name="ChevronDown" class="w-4 h-4 transition-transform" x-bind:class="open ? 'rotate-180' : ''" />
+            </button>
+            <div x-show="open" class="pl-6 pr-3 py-2 space-y-2 border-l border-stone-700 ml-4 mt-1">
+              @foreach($activeSocial as $soc)
+                <a href="{{ $soc['url'] }}" target="_blank" class="flex items-center gap-3 text-sm text-stone-400 hover:text-emerald-400">
+                  @if(!empty($soc['icon']))
+                    <x-icon :name="$soc['icon']" class="w-4 h-4" />
+                  @endif
+                  {{ $soc['platform_name'] }}
+                </a>
+              @endforeach
+            </div>
+          </div>
+        @endif
+      @else
+        <a
+          href="{{ route($item['route']) }}"
+          class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium flex items-center justify-between {{ $currentView === $item['id'] ? 'bg-emerald-950/80 text-emerald-400 font-semibold' : 'text-stone-300 hover:bg-stone-800 hover:text-white' }}"
+        >
+          <span class="flex items-center gap-2">
+            @isset($item['icon'])
+              <x-icon :name="$item['icon']" class="w-4 h-4 text-emerald-400" />
+            @endisset
+            <span><x-t :id="$item['labelId']" :en="$item['labelEn']" /></span>
+          </span>
+        </a>
+      @endif
     @endforeach
 
     <div class="pt-3 border-t border-stone-800 mt-2 flex items-center justify-between text-xs text-stone-400 px-3">

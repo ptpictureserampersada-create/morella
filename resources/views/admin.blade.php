@@ -9,6 +9,7 @@ $adminData = [
     'culture' => $culture,
     'gallery' => $gallery,
     'team' => $team,
+    'pengabdian' => $pengabdian,
     'bookings' => $bookings,
     'paymentSettings' => $paymentSettings,
     'heroSliders' => $heroSliders,
@@ -206,6 +207,22 @@ $adminData = [
           class="px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors"
         >
           👥 Tim Pengabdian
+        </button>
+        <button
+          type="button"
+          @click="setTab('pengabdian')"
+          :class="activeTab === 'pengabdian' ? 'bg-stone-900 text-white shadow-xs' : 'bg-white text-stone-600 border border-stone-200 hover:bg-stone-100'"
+          class="px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors"
+        >
+          🤝 Data Pengabdian
+        </button>
+        <button
+          type="button"
+          @click="setTab('sosial')"
+          :class="activeTab === 'sosial' ? 'bg-stone-900 text-white shadow-xs' : 'bg-white text-stone-600 border border-stone-200 hover:bg-stone-100'"
+          class="px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors"
+        >
+          📱 Media Sosial
         </button>
         <button
           type="button"
@@ -838,7 +855,7 @@ $adminData = [
       <div x-show="activeTab === 'tim'" class="space-y-4">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <h3 class="font-serif text-xl font-bold text-stone-900">
-            Tim Pengabdian Mahasiswa UNIDAR Ambon
+            Tim Pengabdian Kosa bangsa UNIDAR Ambon dan Universitas Sebelas Maret
           </h3>
           <button
             type="button"
@@ -860,18 +877,130 @@ $adminData = [
                   <div class="text-[11px] text-stone-400" x-text="m.department"></div>
                 </div>
               </div>
-              <form method="POST" :action="entityUrl('tim', m.id, 'hapus')">
-                @csrf
-                <button type="submit" class="p-2 text-rose-600 hover:text-rose-800">
-                  <x-icon name="Trash2" class="w-4 h-4" />
+              <div class="flex items-center gap-1">
+                <button type="button" @click="openEditTeam(m)" class="p-2 text-stone-500 hover:text-emerald-700" title="Edit Data">
+                  <x-icon name="Edit2" class="w-4 h-4" />
                 </button>
-              </form>
+                <form method="POST" :action="entityUrl('tim', m.id, 'hapus')" @submit="confirmSubmit($event, 'Yakin ingin menghapus ' + m.name + '?')">
+                  @csrf
+                  <button type="submit" class="p-2 text-rose-600 hover:text-rose-800" title="Hapus Data">
+                    <x-icon name="Trash2" class="w-4 h-4" />
+                  </button>
+                </form>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      {{-- TAB CONTENT: 🤝 DATA PENGABDIAN CRUD --}}
+      <div x-show="activeTab === 'pengabdian'" class="space-y-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h3 class="font-serif text-xl font-bold text-stone-900">
+              Kegiatan Pengabdian Masyarakat
+            </h3>
+            <p class="text-xs text-stone-500">
+              Data kegiatan ini tampil pada halaman Pengabdian di website.
+            </p>
+          </div>
+          <button
+            type="button"
+            @click="isAddPengabdianModalOpen = true"
+            class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5"
+          >
+            <x-icon name="Plus" class="w-4 h-4" />
+            <span>Tambah Data Baru</span>
+          </button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <template x-for="p in pengabdian" :key="p.id">
+            <div class="p-4 bg-white rounded-2xl border border-stone-200 flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <img :src="p.imageUrl" :alt="p.title" class="w-14 h-14 rounded-xl object-cover shrink-0" />
+                <div class="min-w-0">
+                  <h5 class="font-serif font-bold text-stone-900 text-sm truncate" x-text="p.title"></h5>
+                  <div class="text-xs text-emerald-700" x-text="p.category"></div>
+                  <div class="text-[11px] text-stone-400 truncate" x-text="(p.date || '') + (p.location ? ' · ' + p.location : '')"></div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 shrink-0">
+                <form method="POST" :action="entityUrl('pengabdian', p.id, 'perbarui')" class="inline">
+                  @csrf
+                  <input type="hidden" name="published" :value="p.published ? '0' : '1'" />
+                  <button
+                    type="submit"
+                    class="px-2.5 py-1 text-[11px] rounded bg-stone-100 hover:bg-stone-200 font-medium"
+                    x-text="p.published ? 'Sembunyikan' : 'Tayangkan'"
+                  ></button>
+                </form>
+                <form
+                  method="POST"
+                  :action="entityUrl('pengabdian', p.id, 'hapus')"
+                  class="inline"
+                  @submit="confirmSubmit($event, 'Yakin ingin menghapus ' + p.title + '?')"
+                >
+                  @csrf
+                  <button type="submit" class="p-2 text-rose-600 hover:text-rose-800" title="Hapus Kegiatan">
+                    <x-icon name="Trash2" class="w-4 h-4" />
+                  </button>
+                </form>
+              </div>
             </div>
           </template>
         </div>
       </div>
 
       {{-- TAB CONTENT: ⚙️ PENGATURAN --}}
+      {{-- Tab Media Sosial --}}
+      <div x-show="activeTab === 'sosial'" class="space-y-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h3 class="font-serif text-xl font-bold text-stone-900">Media Sosial</h3>
+            <p class="text-xs text-stone-500">Kelola daftar link media sosial yang tampil pada navbar website.</p>
+          </div>
+          <button type="button" @click="isAddSocialModalOpen = true" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5">
+            <x-icon name="Plus" class="w-4 h-4" /><span>Tambah Data Baru</span>
+          </button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <template x-for="soc in socialLinks" :key="soc.id">
+            <div class="p-4 bg-white rounded-2xl border border-stone-200 flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-stone-100 flex items-center justify-center text-stone-500">
+                  <template x-if="soc.icon === 'Instagram'"><x-icon name="Instagram" class="w-5 h-5" /></template>
+                  <template x-if="soc.icon === 'Youtube'"><x-icon name="Youtube" class="w-5 h-5" /></template>
+                  <template x-if="soc.icon === 'Facebook'"><x-icon name="Facebook" class="w-5 h-5" /></template>
+                  <template x-if="soc.icon === 'MessageCircle'"><x-icon name="MessageCircle" class="w-5 h-5" /></template>
+                  <template x-if="soc.icon === 'Twitter'"><x-icon name="Twitter" class="w-5 h-5" /></template>
+                  <template x-if="soc.icon === 'Globe'"><x-icon name="Globe" class="w-5 h-5" /></template>
+                  <template x-if="!['Instagram', 'Youtube', 'Facebook', 'MessageCircle', 'Twitter', 'Globe'].includes(soc.icon)"><x-icon name="Link2" class="w-5 h-5" /></template>
+                </div>
+                <div>
+                  <h4 class="font-bold text-stone-900 text-sm" x-text="soc.platform_name"></h4>
+                  <a :href="soc.url" target="_blank" class="text-xs text-emerald-600 hover:underline block truncate w-40" x-text="soc.url"></a>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-1 rounded text-[10px] font-bold uppercase" :class="soc.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-stone-100 text-stone-500'" x-text="soc.is_active ? 'Aktif' : 'Nonaktif'"></span>
+                <button type="button" @click="openEditSocialModal(soc)" class="p-1.5 rounded-lg text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors" title="Edit">
+                  <x-icon name="Edit" class="w-4 h-4" />
+                </button>
+                <button type="button" @click="deleteEntity('sosial', soc.id)" class="p-1.5 rounded-lg text-stone-400 hover:text-rose-600 hover:bg-rose-50 transition-colors" title="Hapus">
+                  <x-icon name="Trash2" class="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </template>
+        </div>
+        <template x-if="!socialLinks || socialLinks.length === 0">
+          <div class="py-12 text-center bg-stone-50 rounded-2xl border border-stone-200 border-dashed">
+            <x-icon name="Link2" class="w-8 h-8 text-stone-300 mx-auto mb-3" />
+            <p class="text-stone-500 text-sm">Belum ada data media sosial.</p>
+          </div>
+        </template>
+      </div>
+
       <div x-show="activeTab === 'pengaturan'" class="p-6 bg-white rounded-2xl border border-stone-200 space-y-6 max-w-2xl">
         <h3 class="font-serif text-xl font-bold text-stone-900">
           Pengaturan &amp; Sinkronisasi Portal
@@ -983,6 +1112,8 @@ $adminData = [
             </div>
           </div>
         </div>
+
+
 
         <div class="pt-4 border-t border-stone-200">
           <div class="flex items-center justify-between mb-4">
@@ -1642,7 +1773,7 @@ $adminData = [
                   <option value="alam">Alam &amp; Lingkungan</option>
                   <option value="budaya">Budaya &amp; Tradisi</option>
                   <option value="masyarakat">Sosial Masyarakat</option>
-                  <option value="pengabdian">Pengabdian KKN</option>
+                  <option value="pengabdian">Pengabdian</option>
                   <option value="wisata">Pariwisata</option>
                 </select>
               </div>
@@ -1787,6 +1918,284 @@ $adminData = [
         </div>
       </template>
 
+      {{-- MODAL: Edit Anggota Tim --}}
+      <template x-if="isEditTeamModalOpen">
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs">
+          <div class="bg-white rounded-2xl max-w-lg w-full p-6 text-stone-900 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-stone-200">
+              <h3 class="font-serif font-bold text-lg">Edit Anggota Tim</h3>
+              <button type="button" @click="isEditTeamModalOpen = false">
+                <x-icon name="X" class="w-5 h-5 text-stone-400" />
+              </button>
+            </div>
+
+            <form method="POST" :action="entityUrl('tim', editTeamData.id, 'perbarui')" class="space-y-4 pt-4 text-xs">
+              @csrf
+              <div>
+                <label class="font-semibold text-stone-700 block mb-1">Nama Lengkap</label>
+                <input
+                  type="text"
+                  required
+                  name="name"
+                  x-model="editTeamData.name"
+                  class="w-full px-3 py-2 border border-stone-300 rounded-lg"
+                />
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="font-semibold text-stone-700 block mb-1">Peran / Jabatan</label>
+                  <input
+                    type="text"
+                    required
+                    name="role"
+                    x-model="editTeamData.role"
+                    class="w-full px-3 py-2 border border-stone-300 rounded-lg"
+                  />
+                </div>
+                <div>
+                  <label class="font-semibold text-stone-700 block mb-1">Fakultas / Instansi</label>
+                  <input
+                    type="text"
+                    name="department"
+                    x-model="editTeamData.department"
+                    class="w-full px-3 py-2 border border-stone-300 rounded-lg"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="font-semibold text-stone-700 flex justify-between items-center mb-1">
+                  <span>URL Foto Profil (Link)</span>
+                  <label class="cursor-pointer text-[10px] bg-stone-100 hover:bg-stone-200 px-2 py-1 rounded text-stone-700 font-medium transition-colors">
+                    Upload Lokal
+                    <input type="file" accept="image/*" class="hidden" @change="processUpload($event, 'editTeamData', 'photoUrl', 600)" />
+                  </label>
+                </label>
+                <input
+                  type="text"
+                  name="photoUrl"
+                  x-model="editTeamData.photoUrl"
+                  class="w-full px-3 py-2 border border-stone-300 rounded-lg font-mono text-[11px]"
+                />
+                <p class="text-[10px] text-stone-400 mt-1">Gunakan gambar persegi (1:1) minimal 400x400px.</p>
+              </div>
+
+              <div class="flex justify-end gap-2 pt-3 border-t border-stone-200">
+                <button type="button" @click="isEditTeamModalOpen = false" class="px-4 py-2 bg-stone-100 rounded-lg font-medium">
+                  Batal
+                </button>
+                <button type="submit" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-semibold">
+                  Simpan Perubahan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </template>
+
+      {{-- MODAL TAMBAH MEDIA SOSIAL --}}
+      <template x-if="isAddSocialModalOpen">
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs">
+          <div class="bg-white rounded-2xl max-w-lg w-full p-6 text-stone-900 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-stone-200">
+              <h3 class="font-serif font-bold text-lg">Tambah Media Sosial</h3>
+              <button type="button" @click="isAddSocialModalOpen = false">
+                <x-icon name="X" class="w-5 h-5 text-stone-400" />
+              </button>
+            </div>
+            <form method="POST" action="{{ route('admin.create', ['entity' => 'sosial']) }}" class="space-y-4 pt-4 text-xs">
+              @csrf
+              <div>
+                <label class="font-semibold text-stone-700 block mb-1">Nama Platform (Misal: Instagram)</label>
+                <input type="text" required name="platform_name" class="w-full px-3 py-2 border border-stone-300 rounded-lg" />
+              </div>
+              <div>
+                <label class="font-semibold text-stone-700 block mb-1">URL / Link Profil</label>
+                <input type="url" required name="url" placeholder="https://..." class="w-full px-3 py-2 border border-stone-300 rounded-lg" />
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="font-semibold text-stone-700 block mb-1">Ikon</label>
+                  <select name="icon" class="w-full px-3 py-2 border border-stone-300 rounded-lg bg-white">
+                    <option value="Instagram">Instagram</option>
+                    <option value="Youtube">Youtube</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="MessageCircle">WhatsApp / Pesan</option>
+                    <option value="Twitter">Twitter</option>
+                    <option value="Globe">Website (Globe)</option>
+                    <option value="Link2">Lainnya (Link)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="font-semibold text-stone-700 block mb-1">Status</label>
+                  <select name="is_active" class="w-full px-3 py-2 border border-stone-300 rounded-lg bg-white">
+                    <option value="1">Aktif</option>
+                    <option value="0">Nonaktif</option>
+                  </select>
+                </div>
+              </div>
+              <div class="flex justify-end gap-2 pt-3 border-t border-stone-200">
+                <button type="button" @click="isAddSocialModalOpen = false" class="px-4 py-2 bg-stone-100 rounded-lg font-medium">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-semibold">Simpan</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </template>
+
+      {{-- MODAL EDIT MEDIA SOSIAL --}}
+      <template x-if="isEditSocialModalOpen">
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs">
+          <div class="bg-white rounded-2xl max-w-lg w-full p-6 text-stone-900 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-stone-200">
+              <h3 class="font-serif font-bold text-lg">Edit Media Sosial</h3>
+              <button type="button" @click="isEditSocialModalOpen = false">
+                <x-icon name="X" class="w-5 h-5 text-stone-400" />
+              </button>
+            </div>
+            <form method="POST" x-bind:action="`{{ url('/admin/update/sosial') }}/${tempSocial.id}`" class="space-y-4 pt-4 text-xs">
+              @csrf
+              <div>
+                <label class="font-semibold text-stone-700 block mb-1">Nama Platform</label>
+                <input type="text" required name="platform_name" x-model="tempSocial.platform_name" class="w-full px-3 py-2 border border-stone-300 rounded-lg" />
+              </div>
+              <div>
+                <label class="font-semibold text-stone-700 block mb-1">URL / Link Profil</label>
+                <input type="url" required name="url" x-model="tempSocial.url" class="w-full px-3 py-2 border border-stone-300 rounded-lg" />
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="font-semibold text-stone-700 block mb-1">Ikon</label>
+                  <select name="icon" x-model="tempSocial.icon" class="w-full px-3 py-2 border border-stone-300 rounded-lg bg-white">
+                    <option value="Instagram">Instagram</option>
+                    <option value="Youtube">Youtube</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="MessageCircle">WhatsApp / Pesan</option>
+                    <option value="Twitter">Twitter</option>
+                    <option value="Globe">Website (Globe)</option>
+                    <option value="Link2">Lainnya (Link)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="font-semibold text-stone-700 block mb-1">Status</label>
+                  <select name="is_active" x-model="tempSocial.is_active" class="w-full px-3 py-2 border border-stone-300 rounded-lg bg-white">
+                    <option value="1">Aktif</option>
+                    <option value="0">Nonaktif</option>
+                  </select>
+                </div>
+              </div>
+              <div class="flex justify-end gap-2 pt-3 border-t border-stone-200">
+                <button type="button" @click="isEditSocialModalOpen = false" class="px-4 py-2 bg-stone-100 rounded-lg font-medium">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-semibold">Simpan Perubahan</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </template>
+
+      {{-- MODAL: Tambah Kegiatan Pengabdian --}}
+      <template x-if="isAddPengabdianModalOpen">
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs">
+          <div class="bg-white rounded-2xl max-w-lg w-full p-6 text-stone-900 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-stone-200">
+              <h3 class="font-serif font-bold text-lg">Tambah Kegiatan Pengabdian</h3>
+              <button type="button" @click="isAddPengabdianModalOpen = false">
+                <x-icon name="X" class="w-5 h-5 text-stone-400" />
+              </button>
+            </div>
+
+            <form method="POST" action="{{ route('admin.create', ['entity' => 'pengabdian']) }}" class="space-y-4 pt-4 text-xs">
+              @csrf
+              <div>
+                <label class="font-semibold text-stone-700 block mb-1">Judul Kegiatan</label>
+                <input
+                  type="text"
+                  required
+                  name="title"
+                  x-model="newPengabdian.title"
+                  class="w-full px-3 py-2 border border-stone-300 rounded-lg"
+                />
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="font-semibold text-stone-700 block mb-1">Kategori</label>
+                  <input
+                    type="text"
+                    name="category"
+                    x-model="newPengabdian.category"
+                    class="w-full px-3 py-2 border border-stone-300 rounded-lg"
+                    placeholder="Pelatihan / Digitalisasi / ..."
+                  />
+                </div>
+                <div>
+                  <label class="font-semibold text-stone-700 block mb-1">Tanggal Pelaksanaan</label>
+                  <input
+                    type="text"
+                    name="date"
+                    x-model="newPengabdian.date"
+                    class="w-full px-3 py-2 border border-stone-300 rounded-lg"
+                    placeholder="12 Oktober 2026"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="font-semibold text-stone-700 block mb-1">Lokasi</label>
+                <input
+                  type="text"
+                  name="location"
+                  x-model="newPengabdian.location"
+                  class="w-full px-3 py-2 border border-stone-300 rounded-lg"
+                />
+              </div>
+
+              <div>
+                <label class="font-semibold text-stone-700 block mb-1">Deskripsi Kegiatan</label>
+                <textarea
+                  name="description"
+                  x-model="newPengabdian.description"
+                  rows="3"
+                  class="w-full px-3 py-2 border border-stone-300 rounded-lg"
+                ></textarea>
+              </div>
+
+              <div>
+                <label class="font-semibold text-stone-700 flex justify-between items-center mb-1">
+                  <span>URL Gambar (Link)</span>
+                  <label class="cursor-pointer text-[10px] bg-stone-100 hover:bg-stone-200 px-2 py-1 rounded text-stone-700 font-medium transition-colors">
+                    Upload Lokal
+                    <input type="file" accept="image/*" class="hidden" @change="processUpload($event, 'newPengabdian', 'imageUrl', 1200)" />
+                  </label>
+                </label>
+                <input
+                  type="text"
+                  name="imageUrl"
+                  x-model="newPengabdian.imageUrl"
+                  class="w-full px-3 py-2 border border-stone-300 rounded-lg font-mono text-[11px]"
+                  placeholder="https://... atau klik Upload Lokal"
+                />
+                <p class="text-[10px] text-stone-400 mt-1">Unggah gambar: min 10 KB, maks 5 MB (dikompres otomatis)</p>
+              </div>
+
+              <input type="hidden" name="titleEn" value="" />
+              <input type="hidden" name="descriptionEn" value="" />
+              <input type="hidden" name="published" value="1" />
+
+              <div class="flex justify-end gap-2 pt-3 border-t border-stone-200">
+                <button type="button" @click="isAddPengabdianModalOpen = false" class="px-4 py-2 bg-stone-100 rounded-lg font-medium">
+                  Batal
+                </button>
+                <button type="submit" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-semibold">
+                  Simpan Kegiatan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </template>
+
     </div>
   </template>
 </div>
@@ -1804,10 +2213,14 @@ function adminView(data, isAdminAuthenticated) {
     cultureItems: data.culture || [],
     gallery: data.gallery || [],
     team: data.team || [],
+    pengabdian: data.pengabdian || [],
+    socialLinks: data.socialLinks || [],
     bookings: data.bookings || [],
     paymentSettings: data.paymentSettings || {},
     heroSliders: data.heroSliders || [],
     contactInfo: data.contactInfo || {},
+    socialMedia: data.socialMedia || {},
+
     heroText: data.heroText || {},
     webVisits: data.webVisits || 0,
 
@@ -1833,6 +2246,20 @@ function adminView(data, isAdminAuthenticated) {
     isAddCultureModalOpen: false,
     isAddGalleryModalOpen: false,
     isAddTeamModalOpen: false,
+    isEditTeamModalOpen: false,
+    editTeamData: {
+      id: '',
+      name: '',
+      role: '',
+      department: '',
+      photoUrl: ''
+    },
+    openEditTeam(m) {
+      this.editTeamData = { ...m };
+      this.isEditTeamModalOpen = true;
+    },
+    isAddPengabdianModalOpen: false,
+
 
     checkInCode: '',
     checkInMessage: '',
@@ -1844,6 +2271,13 @@ function adminView(data, isAdminAuthenticated) {
     tempSliders: '',
     isEditingContact: false,
     tempContact: {},
+    isAddSocialModalOpen: false,
+    isEditSocialModalOpen: false,
+    tempSocial: {},
+    openEditSocialModal(soc) {
+      this.tempSocial = { ...soc };
+      this.isEditSocialModalOpen = true;
+    },
     isEditingHeroText: false,
     tempHeroText: {},
 
@@ -1894,6 +2328,14 @@ function adminView(data, isAdminAuthenticated) {
       role: 'Mahasiswa KKN',
       department: '',
       photoUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80',
+    },
+    newPengabdian: {
+      title: '',
+      category: 'Pelatihan',
+      date: '',
+      location: 'Negeri Morella',
+      description: '',
+      imageUrl: 'https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop&w=1000&q=80',
     },
 
     init() {
@@ -2172,6 +2614,7 @@ function adminView(data, isAdminAuthenticated) {
         alert('Informasi kontak berhasil disimpan!');
       });
     },
+
 
     toggleHeroText() {
       var self = this;

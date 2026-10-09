@@ -40,6 +40,7 @@ Route::middleware('admin.auth')->group(function () {
     Route::post('/admin/pengaturan/pembayaran', [ActionController::class, 'updatePaymentSettings'])->name('admin.payment');
     Route::post('/admin/pengaturan/slider', [ActionController::class, 'updateHeroSliders'])->name('admin.sliders');
     Route::post('/admin/pengaturan/kontak', [ActionController::class, 'updateContactInfo'])->name('admin.contact');
+    Route::post('/admin/pengaturan/program-text', [ActionController::class, 'updateProgramText'])->name('admin.programText');
     Route::post('/admin/pengaturan/hero', [ActionController::class, 'updateHeroText'])->name('admin.heroText');
     Route::post('/admin/reset', [ActionController::class, 'reset'])->name('admin.reset');
 });

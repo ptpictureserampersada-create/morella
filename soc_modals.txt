@@ -1,0 +1,100 @@
+      {{-- MODAL TAMBAH MEDIA SOSIAL --}}
+      <template x-if="isAddSocialModalOpen">
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs">
+          <div class="bg-white rounded-2xl max-w-lg w-full p-6 text-stone-900 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-stone-200">
+              <h3 class="font-serif font-bold text-lg">Tambah Media Sosial</h3>
+              <button type="button" @click="isAddSocialModalOpen = false">
+                <x-icon name="X" class="w-5 h-5 text-stone-400" />
+              </button>
+            </div>
+            <form method="POST" action="{{ route('admin.create', ['entity' => 'sosial']) }}" class="space-y-4 pt-4 text-xs">
+              @csrf
+              <div>
+                <label class="font-semibold text-stone-700 block mb-1">Nama Platform (Misal: Instagram)</label>
+                <input type="text" required name="platform_name" class="w-full px-3 py-2 border border-stone-300 rounded-lg" />
+              </div>
+              <div>
+                <label class="font-semibold text-stone-700 block mb-1">URL / Link Profil</label>
+                <input type="url" required name="url" placeholder="https://..." class="w-full px-3 py-2 border border-stone-300 rounded-lg" />
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="font-semibold text-stone-700 block mb-1">Ikon</label>
+                  <select name="icon" class="w-full px-3 py-2 border border-stone-300 rounded-lg bg-white">
+                    <option value="Instagram">Instagram</option>
+                    <option value="Youtube">Youtube</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="MessageCircle">WhatsApp / Pesan</option>
+                    <option value="Twitter">Twitter</option>
+                    <option value="Globe">Website (Globe)</option>
+                    <option value="Link2">Lainnya (Link)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="font-semibold text-stone-700 block mb-1">Status</label>
+                  <select name="is_active" class="w-full px-3 py-2 border border-stone-300 rounded-lg bg-white">
+                    <option value="1">Aktif</option>
+                    <option value="0">Nonaktif</option>
+                  </select>
+                </div>
+              </div>
+              <div class="flex justify-end gap-2 pt-3 border-t border-stone-200">
+                <button type="button" @click="isAddSocialModalOpen = false" class="px-4 py-2 bg-stone-100 rounded-lg font-medium">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-semibold">Simpan</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </template>
+
+      {{-- MODAL EDIT MEDIA SOSIAL --}}
+      <template x-if="isEditSocialModalOpen">
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs">
+          <div class="bg-white rounded-2xl max-w-lg w-full p-6 text-stone-900 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-stone-200">
+              <h3 class="font-serif font-bold text-lg">Edit Media Sosial</h3>
+              <button type="button" @click="isEditSocialModalOpen = false">
+                <x-icon name="X" class="w-5 h-5 text-stone-400" />
+              </button>
+            </div>
+            <form method="POST" x-bind:action="`{{ url('/admin/update/sosial') }}/${tempSocial.id}`" class="space-y-4 pt-4 text-xs">
+              @csrf
+              <div>
+                <label class="font-semibold text-stone-700 block mb-1">Nama Platform</label>
+                <input type="text" required name="platform_name" x-model="tempSocial.platform_name" class="w-full px-3 py-2 border border-stone-300 rounded-lg" />
+              </div>
+              <div>
+                <label class="font-semibold text-stone-700 block mb-1">URL / Link Profil</label>
+                <input type="url" required name="url" x-model="tempSocial.url" class="w-full px-3 py-2 border border-stone-300 rounded-lg" />
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="font-semibold text-stone-700 block mb-1">Ikon</label>
+                  <select name="icon" x-model="tempSocial.icon" class="w-full px-3 py-2 border border-stone-300 rounded-lg bg-white">
+                    <option value="Instagram">Instagram</option>
+                    <option value="Youtube">Youtube</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="MessageCircle">WhatsApp / Pesan</option>
+                    <option value="Twitter">Twitter</option>
+                    <option value="Globe">Website (Globe)</option>
+                    <option value="Link2">Lainnya (Link)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="font-semibold text-stone-700 block mb-1">Status</label>
+                  <select name="is_active" x-model="tempSocial.is_active" class="w-full px-3 py-2 border border-stone-300 rounded-lg bg-white">
+                    <option value="1">Aktif</option>
+                    <option value="0">Nonaktif</option>
+                  </select>
+                </div>
+              </div>
+              <div class="flex justify-end gap-2 pt-3 border-t border-stone-200">
+                <button type="button" @click="isEditSocialModalOpen = false" class="px-4 py-2 bg-stone-100 rounded-lg font-medium">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-semibold">Simpan Perubahan</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </template>
+

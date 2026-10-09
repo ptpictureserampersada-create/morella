@@ -1,0 +1,42 @@
+      {{-- Tab Media Sosial --}}
+      <div x-show="activeTab === 'sosial'" class="space-y-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h3 class="font-serif text-xl font-bold text-stone-900">Media Sosial</h3>
+            <p class="text-xs text-stone-500">Kelola daftar link media sosial yang tampil pada navbar website.</p>
+          </div>
+          <button type="button" @click="isAddSocialModalOpen = true" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5">
+            <x-icon name="Plus" class="w-4 h-4" /><span>Tambah Data Baru</span>
+          </button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <template x-for="soc in socialLinks" :key="soc.id">
+            <div class="p-4 bg-white rounded-2xl border border-stone-200 flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-stone-100 flex items-center justify-center text-stone-500">
+                  <x-icon :name="soc.icon" class="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 class="font-bold text-stone-900 text-sm" x-text="soc.platform_name"></h4>
+                  <a :href="soc.url" target="_blank" class="text-xs text-emerald-600 hover:underline block truncate w-40" x-text="soc.url"></a>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-1 rounded text-[10px] font-bold uppercase" :class="soc.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-stone-100 text-stone-500'" x-text="soc.is_active ? 'Aktif' : 'Nonaktif'"></span>
+                <button type="button" @click="openEditSocialModal(soc)" class="p-1.5 rounded-lg text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors" title="Edit">
+                  <x-icon name="Edit" class="w-4 h-4" />
+                </button>
+                <button type="button" @click="deleteEntity('sosial', soc.id)" class="p-1.5 rounded-lg text-stone-400 hover:text-rose-600 hover:bg-rose-50 transition-colors" title="Hapus">
+                  <x-icon name="Trash2" class="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </template>
+        </div>
+        <template x-if="!socialLinks || socialLinks.length === 0">
+          <div class="py-12 text-center bg-stone-50 rounded-2xl border border-stone-200 border-dashed">
+            <x-icon name="Link2" class="w-8 h-8 text-stone-300 mx-auto mb-3" />
+            <p class="text-stone-500 text-sm">Belum ada data media sosial.</p>
+          </div>
+        </template>
+      </div>

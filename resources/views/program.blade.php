@@ -30,6 +30,7 @@ $outcomes = [
     ['metric' => '6 Produk', 'label' => 'UMKM Didampingi Desain Kemasan & Pemasaran Online'],
     ['metric' => '30+ Pemuda', 'label' => 'Tergabung dalam Pelatihan Sadar Wisata Digital Pokdarwis'],
 ];
+
 @endphp
 
 @section('content')
@@ -45,55 +46,6 @@ $outcomes = [
         <h1 class="font-serif text-3xl sm:text-5xl font-bold text-stone-900 tracking-tight leading-tight">
             Universitas Darussalam Ambon
         </h1>
-
-        <div class="p-4 rounded-xl bg-stone-100 border-l-4 border-emerald-600 text-stone-800 text-sm font-medium">
-            &ldquo;Digitalisasi Potensi Pariwisata dan Ekonomi Kreatif Negeri Morella, Kecamatan Leihitu, Kabupaten Maluku Tengah&rdquo;
-        </div>
-
-        <p class="text-xs sm:text-sm text-stone-600 leading-relaxed max-w-prose">
-            Program kolaborasi terpadu antara civitas akademika Universitas Darussalam Ambon bersama Pemerintah Negeri Morella, Lembaga Adat Saniri Negeri, dan Kelompok Sadar Wisata (Pokdarwis) guna mengoptimalkan potensi bahari dan nilai luhur budaya Morella.
-        </p>
-    </div>
-
-    {{-- Profil Universitas & Mitra Negeri --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="p-6 sm:p-8 bg-white rounded-2xl border border-stone-200 shadow-xs space-y-4">
-            <div class="flex items-center gap-3">
-                <div class="p-3 rounded-xl bg-emerald-50 text-emerald-700">
-                    <x-icon name="Building" class="w-6 h-6" />
-                </div>
-                <div>
-                    <h3 class="font-serif text-lg font-bold text-stone-900">
-                        Universitas Darussalam Ambon (UNIDAR)
-                    </h3>
-                    <p class="text-xs text-stone-500">
-                        Lembaga Pendidikan Tinggi Berbasis Keilmuan & Pengabdian di Maluku
-                    </p>
-                </div>
-            </div>
-            <p class="text-xs text-stone-600 leading-relaxed">
-                Sebagai perguruan tinggi terkemuka di Maluku, UNIDAR Ambon senantiasa berkomitmen menjalankan Tri Dharma Perguruan Tinggi, khususnya pengabdian masyarakat yang berorientasi pada pemecahan masalah riil pedesaan pesisir dan pulau-pulau kecil.
-            </p>
-        </div>
-
-        <div class="p-6 sm:p-8 bg-white rounded-2xl border border-stone-200 shadow-xs space-y-4">
-            <div class="flex items-center gap-3">
-                <div class="p-3 rounded-xl bg-amber-50 text-amber-700">
-                    <x-icon name="HeartHandshake" class="w-6 h-6" />
-                </div>
-                <div>
-                    <h3 class="font-serif text-lg font-bold text-stone-900">
-                        Pemerintah Negeri Adat Morella
-                    </h3>
-                    <p class="text-xs text-stone-500">
-                        Mitra Strategis & Tuan Rumah Program Pengabdian
-                    </p>
-                </div>
-            </div>
-            <p class="text-xs text-stone-600 leading-relaxed">
-                Pemerintah Negeri Morella bersama Bapa Raja, Saniri Negeri, dan Pokdarwis memberikan dukungan penuh terhadap proses riset lapangan, wawancara adat, hingga keberlanjutan pemeliharaan infrastruktur portal pariwisata.
-            </p>
-        </div>
     </div>
 
     {{-- Program Kerja (4 Pilar) --}}
@@ -147,6 +99,64 @@ $outcomes = [
         </div>
     </div>
 
+    {{-- Kegiatan Pengabdian (data dari database) --}}
+    @php
+        $pengabdianPublished = array_values(array_filter($pengabdian ?? [], fn ($item) => $item['published'] ?? false));
+    @endphp
+    @if (count($pengabdianPublished) > 0)
+    <div class="space-y-6">
+        <div>
+            <div class="text-xs font-semibold uppercase tracking-widest text-emerald-700">
+                Dokumentasi Lapangan
+            </div>
+            <h2 class="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
+                Kegiatan Pengabdian
+            </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach ($pengabdianPublished as $item)
+            <div class="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-xs flex flex-col">
+                <div class="relative">
+                    <img
+                        src="{{ $item['imageUrl'] }}"
+                        alt="{{ $item['title'] }}"
+                        referrerpolicy="no-referrer"
+                        class="w-full h-44 object-cover"
+                    />
+                    @if (!empty($item['category']))
+                    <div class="absolute top-3 left-3 bg-stone-900/80 backdrop-blur-xs text-white text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-md">
+                        {{ $item['category'] }}
+                    </div>
+                    @endif
+                </div>
+
+                <div class="p-5 space-y-2 flex-1 flex flex-col">
+                    <h4 class="font-serif text-lg font-bold text-stone-900 leading-snug">
+                        {{ $item['title'] }}
+                    </h4>
+
+                    <div class="text-[11px] text-stone-400 flex flex-wrap gap-x-3 gap-y-1">
+                        @if (!empty($item['date']))
+                        <span>{{ $item['date'] }}</span>
+                        @endif
+                        @if (!empty($item['location']))
+                        <span class="truncate">{{ $item['location'] }}</span>
+                        @endif
+                    </div>
+
+                    @if (!empty($item['description']))
+                    <p class="text-xs text-stone-600 leading-relaxed flex-1">
+                        {{ $item['description'] }}
+                    </p>
+                    @endif
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
     {{-- Tim Pengabdian (Dosen Pembimbing & Mahasiswa) --}}
     <div class="space-y-6">
         <div>
@@ -154,7 +164,7 @@ $outcomes = [
                 Struktur Personalia
             </div>
             <h2 class="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
-                Dosen Pembimbing & Tim Mahasiswa UNIDAR
+                Dosen Pembimbing & Tim Pengabdian Kosa bangsa UNIDAR Ambon dan Universitas Sebelas Maret
             </h2>
         </div>
 
@@ -197,3 +207,4 @@ $outcomes = [
 
 </div>
 @endsection
+
