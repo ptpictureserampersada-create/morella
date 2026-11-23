@@ -48,31 +48,7 @@ $outcomes = [
         </h1>
     </div>
 
-    {{-- Program Kerja (4 Pilar) --}}
-    <div class="space-y-6">
-        <div>
-            <div class="text-xs font-semibold uppercase tracking-widest text-emerald-700">
-                Fokus Rencana Aksi
-            </div>
-            <h2 class="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
-                4 Pilar Program Kerja Pengabdian
-            </h2>
-        </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            @foreach ($programPillars as $p)
-            <div class="p-6 bg-white rounded-2xl border border-stone-200 shadow-xs space-y-3">
-                <div class="text-3xl">{{ $p['icon'] }}</div>
-                <h4 class="font-serif text-lg font-bold text-stone-900">
-                    {{ $p['title'] }}
-                </h4>
-                <p class="text-xs text-stone-600 leading-relaxed">
-                    {{ $p['desc'] }}
-                </p>
-            </div>
-            @endforeach
-        </div>
-    </div>
 
     {{-- Hasil Kegiatan & Dampak Capaian --}}
     <div class="p-8 sm:p-10 rounded-3xl bg-stone-900 text-white space-y-8">

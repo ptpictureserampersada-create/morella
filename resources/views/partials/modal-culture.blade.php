@@ -1,4 +1,4 @@
-<template x-if="$store.modals.culture">
+﻿<template x-if="$store.modals.culture">
   <div
     class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm overflow-y-auto animate-in fade-in duration-200"
     @keydown.escape.window="$store.modals.closeCulture()"
@@ -25,11 +25,11 @@
         <div class="absolute bottom-5 left-5 right-5 text-white">
           <span
             class="text-[10px] font-semibold tracking-widest uppercase text-amber-300"
-            x-text="$store.modals.culture.category.toUpperCase().replace('_', ' ') + ' · ARSIP KEBUDAYAAN DESA MORELA'"
+            x-text="($store.modals.culture.category || 'Budaya').toUpperCase().replace('_', ' ') + ' &middot; ARSIP KEBUDAYAAN DESA MORELA'"
           ></span>
           <h2
             class="font-serif text-2xl font-bold text-white mt-1"
-            x-text="$store.ui.lang === 'id' ? $store.modals.culture.title : $store.modals.culture.titleEn"
+            x-text="$store.ui.lang === 'en' && $store.modals.culture.titleEn ? $store.modals.culture.titleEn : ($store.modals.culture.title || '')"
           ></h2>
         </div>
       </div>
@@ -39,22 +39,22 @@
         <div class="p-4 rounded-xl bg-amber-50/70 border border-amber-200/80 space-y-1">
           <div class="flex items-center gap-2 text-xs font-semibold text-amber-900 uppercase tracking-wide">
             <x-icon name="Award" class="w-4 h-4 text-amber-700" />
-            <span><x-t id="Makna & Signifikansi Sejarah" en="Historical Significance" /></span>
+            <span><x-t id="Makna &amp; Signifikansi Sejarah" en="Historical Significance" /></span>
           </div>
           <p
             class="text-xs text-amber-950 leading-relaxed font-serif italic"
-            x-text="'&quot;' + $store.modals.culture.historicalSignificance + '&quot;'"
+            x-text="'&quot;' + ($store.modals.culture.historicalSignificance || '') + '&quot;'"
           ></p>
           <div class="text-[11px] text-amber-800 flex items-center gap-1 pt-1 font-mono">
             <x-icon name="Clock" class="w-3.5 h-3.5" />
-            <span x-text="$store.modals.culture.periodOrTime"></span>
+            <span x-text="$store.modals.culture.periodOrTime || '-'"></span>
           </div>
         </div>
 
         {{-- Long form text --}}
         <div
           class="space-y-4 text-stone-800 text-sm leading-relaxed max-w-prose whitespace-pre-line"
-          x-text="$store.ui.lang === 'id' ? $store.modals.culture.content : $store.modals.culture.contentEn"
+          x-text="$store.ui.lang === 'en' && $store.modals.culture.contentEn ? $store.modals.culture.contentEn : ($store.modals.culture.content || '')"
         ></div>
 
         {{-- Tags --}}

@@ -934,6 +934,14 @@ $adminData = [
                     x-text="p.published ? 'Sembunyikan' : 'Tayangkan'"
                   ></button>
                 </form>
+                <button
+                  type="button"
+                  @click="openEditPengabdianModal(p)"
+                  class="p-2 text-blue-600 hover:text-blue-800"
+                  title="Edit Kegiatan"
+                >
+                  <x-icon name="Edit2" class="w-4 h-4" />
+                </button>
                 <form
                   method="POST"
                   :action="entityUrl('pengabdian', p.id, 'hapus')"
@@ -984,7 +992,7 @@ $adminData = [
               <div class="flex items-center gap-2">
                 <span class="px-2 py-1 rounded text-[10px] font-bold uppercase" :class="soc.is_active ? 'bg-emerald-100 text-emerald-700' : 'bg-stone-100 text-stone-500'" x-text="soc.is_active ? 'Aktif' : 'Nonaktif'"></span>
                 <button type="button" @click="openEditSocialModal(soc)" class="p-1.5 rounded-lg text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors" title="Edit">
-                  <x-icon name="Edit" class="w-4 h-4" />
+                  <x-icon name="Edit2" class="w-4 h-4" />
                 </button>
                 <button type="button" @click="deleteEntity('sosial', soc.id)" class="p-1.5 rounded-lg text-stone-400 hover:text-rose-600 hover:bg-rose-50 transition-colors" title="Hapus">
                   <x-icon name="Trash2" class="w-4 h-4" />
@@ -2196,6 +2204,104 @@ $adminData = [
         </div>
       </template>
 
+      {{-- MODAL: Edit Kegiatan Pengabdian --}}
+      <template x-if="isEditPengabdianModalOpen">
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs">
+          <div class="bg-white rounded-2xl max-w-lg w-full p-6 text-stone-900 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-stone-200">
+              <h3 class="font-serif font-bold text-lg">Edit Kegiatan Pengabdian</h3>
+              <button type="button" @click="isEditPengabdianModalOpen = false">
+                <x-icon name="X" class="w-5 h-5 text-stone-400" />
+              </button>
+            </div>
+
+            <form method="POST" x-bind:action="`{{ url('/admin/update/pengabdian') }}/${editPengabdianData.id}`" class="space-y-4 pt-4 text-xs">
+              @csrf
+              <div>
+                <label class="font-semibold text-stone-700 block mb-1">Judul Kegiatan</label>
+                <input
+                  type="text"
+                  required
+                  name="title"
+                  x-model="editPengabdianData.title"
+                  class="w-full px-3 py-2 border border-stone-300 rounded-lg"
+                />
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="font-semibold text-stone-700 block mb-1">Kategori</label>
+                  <input
+                    type="text"
+                    name="category"
+                    x-model="editPengabdianData.category"
+                    class="w-full px-3 py-2 border border-stone-300 rounded-lg"
+                  />
+                </div>
+                <div>
+                  <label class="font-semibold text-stone-700 block mb-1">Tanggal Pelaksanaan</label>
+                  <input
+                    type="text"
+                    name="date"
+                    x-model="editPengabdianData.date"
+                    class="w-full px-3 py-2 border border-stone-300 rounded-lg"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="font-semibold text-stone-700 block mb-1">Lokasi</label>
+                <input
+                  type="text"
+                  name="location"
+                  x-model="editPengabdianData.location"
+                  class="w-full px-3 py-2 border border-stone-300 rounded-lg"
+                />
+              </div>
+
+              <div>
+                <label class="font-semibold text-stone-700 block mb-1">Deskripsi Kegiatan</label>
+                <textarea
+                  name="description"
+                  x-model="editPengabdianData.description"
+                  rows="3"
+                  class="w-full px-3 py-2 border border-stone-300 rounded-lg"
+                ></textarea>
+              </div>
+
+              <div>
+                <label class="font-semibold text-stone-700 flex justify-between items-center mb-1">
+                  <span>URL Gambar (Link)</span>
+                  <label class="cursor-pointer text-[10px] bg-stone-100 hover:bg-stone-200 px-2 py-1 rounded text-stone-700 font-medium transition-colors">
+                    Upload Lokal
+                    <input type="file" accept="image/*" class="hidden" @change="processUpload($event, 'editPengabdianData', 'imageUrl', 1200)" />
+                  </label>
+                </label>
+                <input
+                  type="text"
+                  name="imageUrl"
+                  x-model="editPengabdianData.imageUrl"
+                  class="w-full px-3 py-2 border border-stone-300 rounded-lg font-mono text-[11px]"
+                />
+              </div>
+
+              <input type="hidden" name="titleEn" :value="editPengabdianData.titleEn" />
+              <input type="hidden" name="descriptionEn" :value="editPengabdianData.descriptionEn" />
+              <input type="hidden" name="published" :value="editPengabdianData.published ? 1 : 0" />
+
+              <div class="flex justify-end gap-2 pt-3 border-t border-stone-200">
+                <button type="button" @click="isEditPengabdianModalOpen = false" class="px-4 py-2 bg-stone-100 rounded-lg font-medium">
+                  Batal
+                </button>
+                <button type="submit" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-semibold">
+                  Simpan Perubahan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </template>
+
     </div>
   </template>
 </div>
@@ -2259,6 +2365,12 @@ function adminView(data, isAdminAuthenticated) {
       this.isEditTeamModalOpen = true;
     },
     isAddPengabdianModalOpen: false,
+    isEditPengabdianModalOpen: false,
+    editPengabdianData: {},
+    openEditPengabdianModal(p) {
+      this.editPengabdianData = { ...p };
+      this.isEditPengabdianModalOpen = true;
+    },
 
 
     checkInCode: '',

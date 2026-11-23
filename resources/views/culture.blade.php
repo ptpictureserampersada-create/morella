@@ -33,51 +33,6 @@
     </p>
   </div>
 
-  {{-- Institutional Featured Spotlight: Tradisi Pukul Sapu --}}
-  <div class="rounded-3xl bg-stone-900 text-stone-100 overflow-hidden border border-stone-800 shadow-xl grid grid-cols-1 lg:grid-cols-12">
-    <div class="lg:col-span-7 p-6 sm:p-10 lg:p-12 flex flex-col justify-between space-y-6">
-      <div class="space-y-4">
-        <div class="inline-flex items-center gap-2 text-xs font-semibold text-amber-400 uppercase tracking-widest">
-          <x-icon name="Award" class="w-4 h-4 text-amber-400" />
-          <span>WARISAN BUDAYA TAKBENDA (WBTB) NASIONAL</span>
-        </div>
-
-        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white tracking-tight leading-snug">
-          Tradisi Sakral Pukul Sapu (Ukuwala Mahiate)
-        </h2>
-
-        <p class="text-xs sm:text-sm text-stone-300 leading-relaxed font-light">
-          Ritual tahunan yang diselenggarakan setiap tanggal 7 Syawal setelah Idul Fitri di Negeri Morela. Saling cambuk dengan lidi pohon enau melambangkan keberanian, ketangguhan fisik, dan ikatan persaudaraan sejati yang disembuhkan dengan ramuan minyak kelapa dan rempah pusaka tanpa meninggalkan rasa dendam.
-        </p>
-
-        <blockquote class="border-l-2 border-amber-500 pl-4 py-1 text-xs text-amber-200/90 italic font-serif">
-          "Biar luka di badan, hati tetap gandong — persaudaraan masyarakat Morela terpatri abadi melintasi generasi."
-        </blockquote>
-      </div>
-
-      <div class="flex items-center gap-3 pt-2">
-        <button
-          type="button"
-          @click="const found = cultureItems.find((i) => i.id === 'cult-2'); if (found) $store.modals.openCulture(found)"
-          class="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs font-semibold transition-colors flex items-center gap-2 shadow-sm"
-        >
-          <span x-text="$store.ui.lang === 'id' ? 'Baca Dokumentasi Lengkap' : 'Read Full Monograph'"></span>
-          <x-icon name="ArrowRight" class="w-3.5 h-3.5" />
-        </button>
-      </div>
-    </div>
-
-    <div class="lg:col-span-5 relative min-h-[260px] bg-stone-950">
-      <img
-        src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1000&q=80"
-        alt="Pukul Sapu Culture Morela"
-        class="w-full h-full object-cover"
-        onerror="this.style.display = 'none'"
-      />
-      <div class="absolute inset-0 bg-gradient-to-t from-stone-950 via-transparent to-transparent lg:hidden"></div>
-    </div>
-  </div>
-
   {{-- Category Tabs --}}
   <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none border-b border-stone-200">
     @foreach ($tabs as $tab)
