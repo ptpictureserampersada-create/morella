@@ -23,7 +23,7 @@
       <x-t id="Arsip Digital Kebudayaan & Nilai Leluhur" en="Digital Cultural Heritage Archive" />
     </div>
     <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-stone-900 tracking-tight">
-      <x-t id="Budaya, Tradisi & Sejarah Morela" en="Culture, Tradition & History of Morela" />
+      <x-t id="Budaya, Tradisi & Sejarah Morella" en="Culture, Tradition & History of Morella" />
     </h1>
     <p class="text-sm text-stone-600 leading-relaxed max-w-prose">
       <x-t
